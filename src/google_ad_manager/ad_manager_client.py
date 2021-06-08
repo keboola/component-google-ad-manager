@@ -49,17 +49,17 @@ class GoogleAdManagerClient:
 
     @staticmethod
     def get_report_query(dimensions, metrics, timezone, dimension_attributes="", ad_unit_view="", currency="",
-                         start_date="", end_date=""):
+                         date_from="", date_to=""):
         report_query = {
             'dimensions': dimensions,
             'columns': metrics,
             'timeZoneType': timezone
         }
 
-        if start_date and end_date:
+        if date_from and date_to:
             report_query['dateRangeType'] = "CUSTOM_DATE"
-            report_query['startDate'] = start_date
-            report_query['endDate'] = end_date
+            report_query['startDate'] = date_from
+            report_query['endDate'] = date_to
 
         if dimension_attributes:
             report_query['dimensionAttributes'] = dimension_attributes

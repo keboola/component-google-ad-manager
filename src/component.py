@@ -25,8 +25,8 @@ KEY_METRICS = "metrics"
 KEY_DIMENSIONS = "dimensions"
 KEY_DIMENSION_ATTRIBUTES = "dimension_attributes"
 KEY_TIMEZONE = "timezone"
-KEY_START_DATE = "start_date"
-KEY_END_DATE = "end_date"
+KEY_DATE_FROM = "date_from"
+KEY_DATE_TO = "date_to"
 KEY_REPORT_CURRENCY = "report_currency"
 
 REQUIRED_PARAMETERS = []
@@ -48,28 +48,28 @@ class Component(ComponentBase):
         token_uri = params.get(KEY_TOKEN_URI)
         network_code = params.get(KEY_NETWORK_CODE)
         report_type = params.get(KEY_REPORT_TYPE)
-        report_name = params.get(KEY_REPORT_NAME)
+        report_name = "".join([params.get(KEY_REPORT_NAME), ".csv"])
         metrics = self.parse_input_string_to_list(params.get(KEY_METRICS))
         dimensions = self.parse_input_string_to_list(params.get(KEY_DIMENSIONS))
         # dimension_attributes = self.parse_input_string_to_list(params.get(KEY_DIMENSION_ATTRIBUTES))
         timezone = params.get(KEY_TIMEZONE)
-        start_date = params.get(KEY_START_DATE)
-        end_date = params.get(KEY_END_DATE)
+        date_from = params.get(KEY_DATE_FROM)
+        date_to = params.get(KEY_DATE_TO)
 
-        start_date = dateparser.parse(start_date).date()
-        end_date = dateparser.parse(end_date).date()
+        date_from = dateparser.parse(date_from).date()
+        date_to = dateparser.parse(date_to).date()
 
         client = GoogleAdManagerClient(client_email, private_key, token_uri, network_code, API_VERSION)
 
         if report_type == "Historical":
-            report_query = client.get_report_query(dimensions, metrics, timezone, start_date=start_date,
-                                                   end_date=end_date)
+            report_query = client.get_report_query(dimensions, metrics, timezone, date_from=date_from,
+                                                   date_to=date_to)
         elif report_type == "Ad Exchange historical":
-            report_query = client.get_report_query(dimensions, metrics, timezone, start_date=start_date,
-                                                   end_date=end_date)
+            report_query = client.get_report_query(dimensions, metrics, timezone, date_from=date_from,
+                                                   date_to=date_to)
         elif report_type == "Future sell - through":
-            report_query = client.get_report_query(dimensions, metrics, timezone, start_date=start_date,
-                                                   end_date=end_date)
+            report_query = client.get_report_query(dimensions, metrics, timezone, date_from=date_from,
+                                                   date_to=date_to)
         elif report_type == "Reach":
             report_query = client.get_report_query(dimensions, metrics)
         elif report_type == "Ad speed":

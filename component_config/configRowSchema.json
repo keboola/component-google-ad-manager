@@ -24,7 +24,7 @@
     "report_name": {
       "title": "Report Name",
       "type": "string",
-      "description": "Name of output table of the report",
+      "description": "Name of output table of the report eg. historical_report",
       "propertyOrder": 2
     },
     "dimensions": {
@@ -59,13 +59,13 @@
     "date_from": {
       "title": "Date from",
       "type": "string",
-      "description": "Date from",
+      "description": "Start date of the report eg. 3 days ago",
       "propertyOrder": 7
     },
     "date_to": {
       "title": "Date to",
       "type": "string",
-      "description": "Date to",
+      "description": "End date of the report eg. 1 day ago",
       "propertyOrder": 8
     },
     "report_currency": {
