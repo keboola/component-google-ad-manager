@@ -56,10 +56,6 @@ class Component(ComponentBase):
         start_date = params.get(KEY_START_DATE)
         end_date = params.get(KEY_END_DATE)
 
-        str = "as,asd,as ,as , as"
-        str = self.parse_input_string_to_list(str)
-        print(str)
-
         start_date = dateparser.parse(start_date).date()
         end_date = dateparser.parse(end_date).date()
 
@@ -107,7 +103,7 @@ class Component(ComponentBase):
                     writer.writerow(result)
                 return reader.fieldnames
 
-    def parse_input_string_to_list(self,input_string):
+    def parse_input_string_to_list(self, input_string):
         input_list = input_string.split(",")
         return [word.strip() for word in input_list]
 
