@@ -16,7 +16,8 @@
         "Future sell - through",
         "Reach",
         "Ad Exchange",
-        "Ad speed"],
+        "Ad speed"
+      ],
       "default": "Object",
       "propertyOrder": 1
     },
@@ -51,19 +52,19 @@
         "PUBLISHER",
         "AD_EXCHANGE",
         "UNKNOWN"
-        ],
-      "default": "Object"
+      ],
+      "default": "Object",
       "propertyOrder": 6
     },
     "date_from": {
       "title": "Date from",
-      "type": "string"
+      "type": "string",
       "description": "Date from",
       "propertyOrder": 7
     },
     "date_to": {
       "title": "Date to",
-      "type": "string"
+      "type": "string",
       "description": "Date to",
       "propertyOrder": 8
     },
