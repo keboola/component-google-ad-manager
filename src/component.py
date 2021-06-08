@@ -44,7 +44,7 @@ class Component(ComponentBase):
         params = self.configuration.parameters
 
         client_email = params.get(KEY_CLIENT_EMAIL)
-        private_key = params.get(KEY_PRIVATE_KEY)
+        private_key = params.get(KEY_PRIVATE_KEY).replace("\\n", "\n")
         token_uri = params.get(KEY_TOKEN_URI)
         network_code = params.get(KEY_NETWORK_CODE)
         report_type = params.get(KEY_REPORT_TYPE)
