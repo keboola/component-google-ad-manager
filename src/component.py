@@ -51,7 +51,7 @@ class Component(ComponentBase):
         report_name = "".join([params.get(KEY_REPORT_NAME), ".csv"])
         metrics = self.parse_input_string_to_list(params.get(KEY_METRICS))
         dimensions = self.parse_input_string_to_list(params.get(KEY_DIMENSIONS))
-        # dimension_attributes = self.parse_input_string_to_list(params.get(KEY_DIMENSION_ATTRIBUTES))
+        dimension_attributes = self.parse_input_string_to_list(params.get(KEY_DIMENSION_ATTRIBUTES))
         timezone = params.get(KEY_TIMEZONE)
         date_from = params.get(KEY_DATE_FROM)
         date_to = params.get(KEY_DATE_TO)
@@ -59,10 +59,14 @@ class Component(ComponentBase):
         date_from = dateparser.parse(date_from).date()
         date_to = dateparser.parse(date_to).date()
 
-        client = GoogleAdManagerClient(client_email, private_key, token_uri, network_code, API_VERSION)
+        try:
+            client = GoogleAdManagerClient(client_email, private_key, token_uri, network_code, API_VERSION)
+        except ValueError as client_error:
+            raise UserException(client_error) from client_error
 
         if report_type == "Historical":
-            report_query = client.get_report_query(dimensions, metrics, timezone, date_from=date_from,
+            report_query = client.get_report_query(dimensions, metrics, timezone,
+                                                   dimension_attributes=dimension_attributes, date_from=date_from,
                                                    date_to=date_to)
         elif report_type == "Ad Exchange historical":
             report_query = client.get_report_query(dimensions, metrics, timezone, date_from=date_from,
