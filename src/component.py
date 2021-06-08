@@ -16,7 +16,7 @@ from keboola.component.base import ComponentBase, UserException
 API_VERSION = "v202105"
 
 KEY_CLIENT_EMAIL = "client_email"
-KEY_PRIVATE_KEY = "#private_key"
+KEY_PRIVATE_KEY = "private_key"
 KEY_TOKEN_URI = "token_uri"
 KEY_NETWORK_CODE = "network_code"
 KEY_REPORT_TYPE = "report_type"

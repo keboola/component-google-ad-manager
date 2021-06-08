@@ -13,7 +13,7 @@
       "type": "string",
       "propertyOrder": 1
     },
-    "#private_key": {
+    "private_key": {
       "title": "Private Key",
       "type": "string",
       "format": "password",
