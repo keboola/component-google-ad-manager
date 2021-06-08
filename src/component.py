@@ -49,12 +49,16 @@ class Component(ComponentBase):
         network_code = params.get(KEY_NETWORK_CODE)
         report_type = params.get(KEY_REPORT_TYPE)
         report_name = params.get(KEY_REPORT_NAME)
-        metrics = params.get(KEY_METRICS)
-        dimensions = params.get(KEY_DIMENSIONS)
-        # dimension_attributes = params.get(KEY_DIMENSION_ATTRIBUTES)
+        metrics = self.parse_input_string_to_list(params.get(KEY_METRICS))
+        dimensions = self.parse_input_string_to_list(params.get(KEY_DIMENSIONS))
+        # dimension_attributes = self.parse_input_string_to_list(params.get(KEY_DIMENSION_ATTRIBUTES))
         timezone = params.get(KEY_TIMEZONE)
         start_date = params.get(KEY_START_DATE)
         end_date = params.get(KEY_END_DATE)
+
+        str = "as,asd,as ,as , as"
+        str = self.parse_input_string_to_list(str)
+        print(str)
 
         start_date = dateparser.parse(start_date).date()
         end_date = dateparser.parse(end_date).date()
@@ -102,6 +106,10 @@ class Component(ComponentBase):
                 for result in reader:
                     writer.writerow(result)
                 return reader.fieldnames
+
+    def parse_input_string_to_list(self,input_string):
+        input_list = input_string.split(",")
+        return [word.strip() for word in input_list]
 
 
 if __name__ == "__main__":
