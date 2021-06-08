@@ -3,7 +3,7 @@
   "title": "Google Ad Manager Authentication",
   "required": [
     "client_email",
-    "private_key",
+    "#private_key",
     "token_uri",
     "network_code"
   ],
@@ -13,10 +13,9 @@
       "type": "string",
       "propertyOrder": 1
     },
-    "private_key": {
+    "#private_key": {
       "title": "Private Key",
       "type": "string",
-      "format": "password",
       "description": "Credentials - private key in plain text (will be encrypted by Keboola). Key must be written in one row, each new line must be delimited by \\n character",
       "propertyOrder": 2
     },
