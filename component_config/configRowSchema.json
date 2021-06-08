@@ -1,0 +1,82 @@
+{
+  "title": "Report Configuration",
+  "type": "object",
+  "required": [
+    "report_type",
+    "report_name",
+    "metrics",
+    "dimensions"
+  ],
+  "properties": {
+    "report_type": {
+      "title": "Report type",
+      "type": "string",
+      "enum": [
+        "Historical",
+        "Future sell - through",
+        "Reach",
+        "Ad Exchange",
+        "Ad speed"],
+      "default": "Object",
+      "propertyOrder": 1
+    },
+    "report_name": {
+      "title": "Report Name",
+      "type": "string",
+      "description": "Name of output table of the report",
+      "propertyOrder": 2
+    },
+    "dimensions": {
+      "title": "Dimensions",
+      "type": "string",
+      "description": "List of dimensions to use for the report",
+      "propertyOrder": 3
+    },
+    "dimension_attributes": {
+      "title": "Dimension Attributes",
+      "type": "string",
+      "description": "List of dimensions attributes to use for the report",
+      "propertyOrder": 4
+    },
+    "metrics": {
+      "title": "Metrics",
+      "type": "string",
+      "description": "List of metrics to use for the report",
+      "propertyOrder": 5
+    },
+    "timezone": {
+      "title": "Timezone",
+      "type": "string",
+      "enum": [
+        "PUBLISHER",
+        "AD_EXCHANGE",
+        "UNKNOWN"
+        ],
+      "default": "Object"
+      "propertyOrder": 6
+    },
+    "date_from": {
+      "title": "Date from",
+      "type": "string"
+      "description": "Date from",
+      "propertyOrder": 7
+    },
+    "date_to": {
+      "title": "Date to",
+      "type": "string"
+      "description": "Date to",
+      "propertyOrder": 8
+    },
+    "report_currency": {
+      "title": "Report currency",
+      "type": "string",
+      "options": {
+        "dependencies": {
+          "report_type": "Ad Exchange"
+        }
+      },
+      "description": "Report currency",
+      "propertyOrder": 9
+    }
+  }
+}

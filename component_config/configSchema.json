@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "title": "Google Ad Manager Authentication",
+  "required": [
+    "client_email",
+    "#private_key",
+    "token_uri",
+    "network_code"
+  ],
+  "properties": {
+    "client_email": {
+      "title": "Client email",
+      "type": "string",
+      "propertyOrder": 1
+    },
+    "#private_key": {
+      "title": "Private Key",
+      "type": "string",
+      "format": "password",
+      "description": "Credentials - private key in plain text (will be encrypted by Keboola). Key must be written in one row, each new line must be delimited by \\n character",
+      "propertyOrder": 2
+    },
+    "token_uri": {
+      "title": "Token URI",
+      "type": "string",
+      "default": "https://oauth2.googleapis.com/token",
+      "description": "Authentication token uri : https://oauth2.googleapis.com/token if not specified otherwise",
+      "propertyOrder": 3
+    },
+    "network_code": {
+      "title": "Network Code",
+      "type": "string",
+      "description": "You'll find this in the URL when you are logged into your network. For example, in the URL https://admanager.google.com/1234#home, 1234 is your network code.",
+      "propertyOrder": 4
+    }
+  }
+}
