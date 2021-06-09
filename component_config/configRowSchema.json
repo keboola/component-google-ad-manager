@@ -5,7 +5,8 @@
     "report_type",
     "report_name",
     "metrics",
-    "dimensions"
+    "dimensions",
+    "timezone"
   ],
   "properties": {
     "report_type": {
@@ -56,17 +57,51 @@
       "default": "Object",
       "propertyOrder": 6
     },
+    "date_range_type": {
+      "title": "Date range type",
+      "type": "string",
+      "enum": [
+        "DYNAMIC",
+        "PRECISE"
+      ],
+      "description": "Dynamic (last week, last month), Fixed : 3 days ago to 1 day ago",
+      "propertyOrder": 7
+    },
+    "dynamic_date_range": {
+      "title": "Dynamic date range",
+      "type": "string",
+      "enum": [
+        "Last week (sun-sat)",
+        "Last month"
+      ],
+      "options": {
+        "dependencies": {
+          "date_range_type": "DYNAMIC"
+        }
+      },
+      "propertyOrder": 8
+    },
     "date_from": {
       "title": "Date from",
       "type": "string",
+      "options": {
+        "dependencies": {
+          "date_range_type": "PRECISE"
+        }
+      },
       "description": "Start date of the report eg. 3 days ago",
-      "propertyOrder": 7
+      "propertyOrder": 9
     },
     "date_to": {
       "title": "Date to",
       "type": "string",
+      "options": {
+        "dependencies": {
+          "date_range_type": "PRECISE"
+        }
+      },
       "description": "End date of the report eg. 1 day ago",
-      "propertyOrder": 8
+      "propertyOrder": 10
     },
     "report_currency": {
       "title": "Report currency",
@@ -77,7 +112,7 @@
         }
       },
       "description": "Report currency",
-      "propertyOrder": 9
+      "propertyOrder": 11
     }
   }
 }

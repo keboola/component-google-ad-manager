@@ -6,10 +6,13 @@ import csv
 import logging
 import dateparser
 import os
+from datetime import date
+from datetime import timedelta
 
 from google_ad_manager.ad_manager_client import GoogleAdManagerClient
 from keboola.utils.header_normalizer import get_normalizer, NormalizerStrategy
 from keboola.component.base import ComponentBase, UserException
+from googleads import errors as google_errors
 
 # Deprecation = February 2022
 # Sunset = May 2022
@@ -27,12 +30,12 @@ KEY_DIMENSION_ATTRIBUTES = "dimension_attributes"
 KEY_TIMEZONE = "timezone"
 KEY_DATE_FROM = "date_from"
 KEY_DATE_TO = "date_to"
+KEY_DATE_RANGE_TYPE = "date_range_type"
+KEY_DYNAMIC_DATE_RANGE = "dynamic_date_range"
 KEY_REPORT_CURRENCY = "report_currency"
 
 REQUIRED_PARAMETERS = []
 REQUIRED_IMAGE_PARS = []
-
-types = ["Historical", "Future sell - through", "Reach", "Ad Exchange", "Ad speed"]
 
 
 class Component(ComponentBase):
@@ -55,9 +58,10 @@ class Component(ComponentBase):
         date_from = params.get(KEY_DATE_FROM)
         date_to = params.get(KEY_DATE_TO)
         report_currency = params.get(KEY_REPORT_CURRENCY)
+        date_range_type = params.get(KEY_DATE_RANGE_TYPE)
+        dynamic_date_range = params.get(KEY_DYNAMIC_DATE_RANGE)
 
-        date_from = dateparser.parse(date_from).date()
-        date_to = dateparser.parse(date_to).date()
+        date_from, date_to = self.get_date_range(date_from, date_to, date_range_type, dynamic_date_range)
 
         try:
             client = GoogleAdManagerClient(client_email, private_key, token_uri, network_code, API_VERSION)
@@ -68,7 +72,11 @@ class Component(ComponentBase):
                                                dimension_attributes=dimension_attributes, date_from=date_from,
                                                date_to=date_to, currency=report_currency)
 
-        result_file = client.fetch_report_result(report_query)
+        try:
+            result_file = client.fetch_report_result(report_query)
+        except google_errors.GoogleAdsServerFault as google_error:
+            raise UserException(google_error) from google_error
+
         filesize = os.path.getsize(result_file.name)
         if filesize == 0:
             raise UserException("No data found")
@@ -99,6 +107,30 @@ class Component(ComponentBase):
     def parse_input_string_to_list(self, input_string):
         input_list = input_string.split(",")
         return [word.strip() for word in input_list]
+
+    @staticmethod
+    def get_last_week_dates():
+        today = date.today()
+        offset = (today.weekday() - 5) % 7
+        last_week_saturday = today - timedelta(days=offset)
+        last_week_sunday = last_week_saturday - timedelta(days=6)
+        return last_week_sunday, last_week_saturday
+
+    def get_last_month_dates(self):
+        last_day_of_prev_month = date.today().replace(day=1) - timedelta(days=1)
+        start_day_of_prev_month = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
+        return start_day_of_prev_month, last_day_of_prev_month
+
+    def get_date_range(self, date_from, date_to, date_range_type, dynamic_date_range):
+        if date_range_type == "DYNAMIC":
+            if dynamic_date_range == "Last week (sun-sat)":
+                date_from, date_to = self.get_last_week_dates()
+            if dynamic_date_range == "Last month":
+                date_from, date_to = self.get_last_month_dates()
+        else:
+            date_from = dateparser.parse(date_from).date()
+            date_to = dateparser.parse(date_to).date()
+        return date_from, date_to
 
 
 if __name__ == "__main__":
