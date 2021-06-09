@@ -33,7 +33,8 @@ KEY_DATE_TO = "date_to"
 KEY_DATE_RANGE = "date_range"
 KEY_REPORT_CURRENCY = "report_currency"
 
-REQUIRED_PARAMETERS = []
+REQUIRED_PARAMETERS = [KEY_CLIENT_EMAIL, KEY_PRIVATE_KEY, KEY_TOKEN_URI, KEY_NETWORK_CODE, KEY_REPORT_TYPE,
+                       KEY_REPORT_NAME, KEY_METRICS, KEY_DIMENSIONS, KEY_TIMEZONE]
 REQUIRED_IMAGE_PARS = []
 
 
@@ -49,7 +50,8 @@ class Component(ComponentBase):
         private_key = params.get(KEY_PRIVATE_KEY).replace("\\n", '\n')
         token_uri = params.get(KEY_TOKEN_URI)
         network_code = params.get(KEY_NETWORK_CODE)
-        report_name = "".join([params.get(KEY_REPORT_NAME), ".csv"])
+        report_name = params.get(KEY_REPORT_NAME)
+        report_name = "".join([self.normalize_report_name(report_name), ".csv"])
         metrics = self.parse_input_string_to_list(params.get(KEY_METRICS))
         dimensions = self.parse_input_string_to_list(params.get(KEY_DIMENSIONS))
         dimension_attributes = self.parse_input_string_to_list(params.get(KEY_DIMENSION_ATTRIBUTES))
@@ -127,7 +129,13 @@ class Component(ComponentBase):
         elif date_range == "Custom":
             date_from = dateparser.parse(date_from).date()
             date_to = dateparser.parse(date_to).date()
+        else:
+            logging.info("No date range specified")
         return date_from, date_to
+
+    def normalize_report_name(self, report_name):
+        header_normalizer = get_normalizer(strategy=NormalizerStrategy.DEFAULT, forbidden_sub="_")
+        return header_normalizer.normalize_header([report_name])[0]
 
 
 if __name__ == "__main__":
