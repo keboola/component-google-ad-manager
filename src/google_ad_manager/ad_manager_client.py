@@ -79,10 +79,8 @@ class GoogleAdManagerClient:
         report_job = {
             'reportQuery': report_query
         }
-        print("[INFO]: Create the report")
         report_job_id = self.create_report(report_job)
 
-        print("[INFO]: Download the report")
         self.report_downloader.DownloadReportToFile(
             report_job_id=report_job_id,
             export_format='CSV_DUMP',
@@ -98,5 +96,5 @@ class GoogleAdManagerClient:
             report_job_id = self.report_downloader.WaitForReport(report_job)
             return report_job_id
         except errors.AdManagerReportError as e:
-            print('[INFO]: Failed to generate report. Error: %s' % e)
+            logging.info('Failed to generate report. Error: %s' % e)
             sys.exit()
