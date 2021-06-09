@@ -47,7 +47,6 @@ class Component(ComponentBase):
         private_key = params.get(KEY_PRIVATE_KEY).replace("\\n", '\n')
         token_uri = params.get(KEY_TOKEN_URI)
         network_code = params.get(KEY_NETWORK_CODE)
-        report_type = params.get(KEY_REPORT_TYPE)
         report_name = "".join([params.get(KEY_REPORT_NAME), ".csv"])
         metrics = self.parse_input_string_to_list(params.get(KEY_METRICS))
         dimensions = self.parse_input_string_to_list(params.get(KEY_DIMENSIONS))
