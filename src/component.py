@@ -30,8 +30,7 @@ KEY_DIMENSION_ATTRIBUTES = "dimension_attributes"
 KEY_TIMEZONE = "timezone"
 KEY_DATE_FROM = "date_from"
 KEY_DATE_TO = "date_to"
-KEY_DATE_RANGE_TYPE = "date_range_type"
-KEY_DYNAMIC_DATE_RANGE = "dynamic_date_range"
+KEY_DATE_RANGE = "date_range"
 KEY_REPORT_CURRENCY = "report_currency"
 
 REQUIRED_PARAMETERS = []
@@ -58,10 +57,9 @@ class Component(ComponentBase):
         date_from = params.get(KEY_DATE_FROM)
         date_to = params.get(KEY_DATE_TO)
         report_currency = params.get(KEY_REPORT_CURRENCY)
-        date_range_type = params.get(KEY_DATE_RANGE_TYPE)
-        dynamic_date_range = params.get(KEY_DYNAMIC_DATE_RANGE)
+        date_range = params.get(KEY_DATE_RANGE)
 
-        date_from, date_to = self.get_date_range(date_from, date_to, date_range_type, dynamic_date_range)
+        date_from, date_to = self.get_date_range(date_from, date_to, date_range)
 
         try:
             client = GoogleAdManagerClient(client_email, private_key, token_uri, network_code, API_VERSION)
@@ -121,13 +119,12 @@ class Component(ComponentBase):
         start_day_of_prev_month = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
         return start_day_of_prev_month, last_day_of_prev_month
 
-    def get_date_range(self, date_from, date_to, date_range_type, dynamic_date_range):
-        if date_range_type == "DYNAMIC":
-            if dynamic_date_range == "Last week (sun-sat)":
-                date_from, date_to = self.get_last_week_dates()
-            if dynamic_date_range == "Last month":
-                date_from, date_to = self.get_last_month_dates()
-        else:
+    def get_date_range(self, date_from, date_to, date_range):
+        if date_range == "Last week (sun-sat)":
+            date_from, date_to = self.get_last_week_dates()
+        elif date_range == "Last month":
+            date_from, date_to = self.get_last_month_dates()
+        elif date_range == "Custom":
             date_from = dateparser.parse(date_from).date()
             date_to = dateparser.parse(date_to).date()
         return date_from, date_to

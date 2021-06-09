@@ -1,1 +1,1 @@
-Testing functional sample extractor for purposes of the python component template. 
+Google Ad Manager is an ad management platform for large publishers who have significant direct sales.
