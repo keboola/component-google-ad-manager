@@ -26,9 +26,9 @@ Once you create a valid report on the Google Ad Manager report page you can go t
 to find the proper names of the dimensions and metrics for the API.
 Eg. CTR in the Ad exchange report type is AD_EXCHANGE_CTR in the API. 
 
-- Dimensios (dimensions) - [REQ]
-- Dimension attributes (dimension_attributes) - [OPT]
-- Metrics (metrics) - [REQ]
+- Dimensios (dimensions) - [REQ] should be written comma separated (no quotation marks) eg. DIMENSION1, DIMENSION2 ... etc.
+- Dimension attributes (dimension_attributes) - [OPT] should be written comma separated (no quotation marks) eg. DIMENSION_ATTR1, DIMENSION_ATTR2 ... etc.
+- Metrics (metrics) - [REQ] should be written comma separated (no quotation marks) eg. METRIC1, METRIC2 ... etc.
 - Report type (report_type) - [REQ] type of report to download
 - Report name (report_name) - [REQ] name of output eg. historical_report_ads_weekly will be saved as this in storage
 - Timezone (timezone) - [REQ] Determines the time zone used for the report's date range. It allows AD_EXCHANGE, PUBLISHER and PROPOSAL_LOCAL

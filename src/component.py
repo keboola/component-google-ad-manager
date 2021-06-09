@@ -6,6 +6,7 @@ import csv
 import logging
 import dateparser
 import os
+import re
 from datetime import date
 from datetime import timedelta
 
@@ -13,6 +14,7 @@ from google_ad_manager.ad_manager_client import GoogleAdManagerClient
 from keboola.utils.header_normalizer import get_normalizer, NormalizerStrategy
 from keboola.component.base import ComponentBase, UserException
 from googleads import errors as google_errors
+from google.auth import exceptions
 
 # Deprecation = February 2022
 # Sunset = May 2022
@@ -67,6 +69,8 @@ class Component(ComponentBase):
             client = GoogleAdManagerClient(client_email, private_key, token_uri, network_code, API_VERSION)
         except ValueError as client_error:
             raise UserException(client_error) from client_error
+        except exceptions.RefreshError as login_error:
+            raise UserException(login_error) from login_error
 
         report_query = client.get_report_query(dimensions, metrics, timezone,
                                                dimension_attributes=dimension_attributes, date_from=date_from,
@@ -105,6 +109,7 @@ class Component(ComponentBase):
                 return reader.fieldnames
 
     def parse_input_string_to_list(self, input_string):
+        input_string = re.sub(r"[^a-zA-Z0-9_,]", '', input_string)
         input_list = input_string.split(",")
         return [word.strip() for word in input_list]
 
