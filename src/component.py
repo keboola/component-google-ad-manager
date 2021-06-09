@@ -32,7 +32,7 @@ KEY_REPORT_CURRENCY = "report_currency"
 REQUIRED_PARAMETERS = []
 REQUIRED_IMAGE_PARS = []
 
-types = ["Historical", "Future sell - through", "Reach", "Sales", "Ad Exchange", "Ad speed"]
+types = ["Historical", "Future sell - through", "Reach", "Ad Exchange", "Ad speed"]
 
 
 class Component(ComponentBase):
@@ -55,6 +55,7 @@ class Component(ComponentBase):
         timezone = params.get(KEY_TIMEZONE)
         date_from = params.get(KEY_DATE_FROM)
         date_to = params.get(KEY_DATE_TO)
+        report_currency = params.get(KEY_REPORT_CURRENCY)
 
         date_from = dateparser.parse(date_from).date()
         date_to = dateparser.parse(date_to).date()
@@ -64,20 +65,9 @@ class Component(ComponentBase):
         except ValueError as client_error:
             raise UserException(client_error) from client_error
 
-        if report_type == "Historical":
-            report_query = client.get_report_query(dimensions, metrics, timezone,
-                                                   dimension_attributes=dimension_attributes, date_from=date_from,
-                                                   date_to=date_to)
-        elif report_type == "Ad Exchange historical":
-            report_query = client.get_report_query(dimensions, metrics, timezone, date_from=date_from,
-                                                   date_to=date_to)
-        elif report_type == "Future sell - through":
-            report_query = client.get_report_query(dimensions, metrics, timezone, date_from=date_from,
-                                                   date_to=date_to)
-        elif report_type == "Reach":
-            report_query = client.get_report_query(dimensions, metrics)
-        elif report_type == "Ad speed":
-            report_query = client.get_report_query(dimensions, metrics)
+        report_query = client.get_report_query(dimensions, metrics, timezone,
+                                               dimension_attributes=dimension_attributes, date_from=date_from,
+                                               date_to=date_to, currency=report_currency)
 
         result_file = client.fetch_report_result(report_query)
         filesize = os.path.getsize(result_file.name)
