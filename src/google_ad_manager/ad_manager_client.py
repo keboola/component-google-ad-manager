@@ -65,8 +65,6 @@ class GoogleAdManagerClient:
         if dimension_attributes:
             report_query['dimensionAttributes'] = dimension_attributes
 
-        report_query['adUnitView'] = "FLAT"
-
         if currency:
             report_query['adxReportCurrency'] = currency
 
