@@ -18,7 +18,7 @@ from google.auth import exceptions
 
 # Deprecation = February 2022
 # Sunset = May 2022
-API_VERSION = "v202105"
+API_VERSION = "v202011"
 
 KEY_CLIENT_EMAIL = "client_email"
 KEY_PRIVATE_KEY = "#private_key"

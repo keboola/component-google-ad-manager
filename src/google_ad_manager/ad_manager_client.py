@@ -53,7 +53,8 @@ class GoogleAdManagerClient:
         report_query = {
             'dimensions': dimensions,
             'columns': metrics,
-            'timeZoneType': timezone
+            'timeZoneType': timezone,
+            'adUnitView': "FLAT"
         }
 
         if date_from and date_to:
@@ -64,8 +65,7 @@ class GoogleAdManagerClient:
         if dimension_attributes:
             report_query['dimensionAttributes'] = dimension_attributes
 
-        if ad_unit_view:
-            report_query['adUnitView'] = ad_unit_view
+        report_query['adUnitView'] = "FLAT"
 
         if currency:
             report_query['adxReportCurrency'] = currency
@@ -74,7 +74,7 @@ class GoogleAdManagerClient:
 
     def fetch_report_result(self, report_query):
         report_file = tempfile.NamedTemporaryFile(
-            mode='w+b', suffix='.csv', delete=False
+            suffix='.csv', delete=False
         )
         report_job = {
             'reportQuery': report_query
