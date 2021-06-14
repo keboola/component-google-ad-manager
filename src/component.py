@@ -18,7 +18,7 @@ from google.auth import exceptions
 
 # Deprecation = February 2022
 # Sunset = May 2022
-API_VERSION = "v202011"
+API_VERSION = "v202105"
 
 KEY_CLIENT_EMAIL = "client_email"
 KEY_PRIVATE_KEY = "#private_key"
@@ -34,6 +34,7 @@ KEY_DATE_FROM = "date_from"
 KEY_DATE_TO = "date_to"
 KEY_DATE_RANGE = "date_range"
 KEY_REPORT_CURRENCY = "report_currency"
+KEY_AD_UNIT_VIEW = "ad_unit_view"
 
 REQUIRED_PARAMETERS = [KEY_CLIENT_EMAIL, KEY_PRIVATE_KEY, KEY_TOKEN_URI, KEY_NETWORK_CODE, KEY_REPORT_TYPE,
                        KEY_REPORT_NAME, KEY_METRICS, KEY_DIMENSIONS, KEY_TIMEZONE]
@@ -62,6 +63,7 @@ class Component(ComponentBase):
         date_to = params.get(KEY_DATE_TO)
         report_currency = params.get(KEY_REPORT_CURRENCY)
         date_range = params.get(KEY_DATE_RANGE)
+        ad_unit_view = params.get(KEY_AD_UNIT_VIEW)
 
         date_from, date_to = self.get_date_range(date_from, date_to, date_range)
 
@@ -74,7 +76,7 @@ class Component(ComponentBase):
 
         report_query = client.get_report_query(dimensions, metrics, timezone,
                                                dimension_attributes=dimension_attributes, date_from=date_from,
-                                               date_to=date_to, currency=report_currency)
+                                               date_to=date_to, currency=report_currency,ad_unit_view=ad_unit_view)
 
         try:
             result_file = client.fetch_report_result(report_query)

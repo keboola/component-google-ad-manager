@@ -105,6 +105,17 @@
       },
       "description": "Report currency",
       "propertyOrder": 11
+    },
+    "ad_unit_view": {
+      "title": "Ad unit view",
+      "type": "string",
+      "enum": [
+        "FLAT",
+        "TOP_LEVEL",
+        "HIERARCHICAL"
+      ],
+      "default": "Object",
+      "propertyOrder": 12
     }
   }
 }

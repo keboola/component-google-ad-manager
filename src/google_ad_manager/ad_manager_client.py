@@ -53,8 +53,7 @@ class GoogleAdManagerClient:
         report_query = {
             'dimensions': dimensions,
             'columns': metrics,
-            'timeZoneType': timezone,
-            'adUnitView': "FLAT"
+            'timeZoneType': timezone
         }
 
         if date_from and date_to:
@@ -64,6 +63,9 @@ class GoogleAdManagerClient:
 
         if dimension_attributes:
             report_query['dimensionAttributes'] = dimension_attributes
+
+        if ad_unit_view:
+            report_query['adUnitView'] = ad_unit_view
 
         if currency:
             report_query['adxReportCurrency'] = currency
