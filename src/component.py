@@ -76,7 +76,7 @@ class Component(ComponentBase):
 
         report_query = client.get_report_query(dimensions, metrics, timezone,
                                                dimension_attributes=dimension_attributes, date_from=date_from,
-                                               date_to=date_to, currency=report_currency,ad_unit_view=ad_unit_view)
+                                               date_to=date_to, currency=report_currency, ad_unit_view=ad_unit_view)
 
         try:
             result_file = client.fetch_report_result(report_query)
