@@ -70,6 +70,8 @@ class GoogleAdManagerClient:
         if currency:
             report_query['adxReportCurrency'] = currency
 
+        logging.info(f"Running query : {report_query}")
+
         return report_query
 
     def fetch_report_result(self, report_query):
@@ -79,6 +81,7 @@ class GoogleAdManagerClient:
         report_job = {
             'reportQuery': report_query
         }
+
         report_job_id = self.create_report(report_job)
 
         self.report_downloader.DownloadReportToFile(
