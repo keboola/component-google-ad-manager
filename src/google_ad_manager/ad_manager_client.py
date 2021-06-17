@@ -49,14 +49,15 @@ class GoogleAdManagerClient:
 
     @staticmethod
     def get_report_query(dimensions, metrics, timezone, dimension_attributes="", ad_unit_view="", currency="",
-                         date_from="", date_to=""):
+                         date_from="", date_to="", dynamic_date=""):
         report_query = {
             'dimensions': dimensions,
             'columns': metrics,
             'timeZoneType': timezone
         }
-
-        if date_from and date_to:
+        if dynamic_date:
+            report_query["dateRangeType"] = dynamic_date
+        elif date_from and date_to:
             report_query['dateRangeType'] = "CUSTOM_DATE"
             report_query['startDate'] = date_from
             report_query['endDate'] = date_to
@@ -71,7 +72,6 @@ class GoogleAdManagerClient:
             report_query['adxReportCurrency'] = currency
 
         logging.info(f"Running query : {report_query}")
-
         return report_query
 
     def fetch_report_result(self, report_query):

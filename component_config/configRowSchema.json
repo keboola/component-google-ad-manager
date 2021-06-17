@@ -63,7 +63,12 @@
       "type": "string",
       "enum": [
         "Last week (sun-sat)",
+        "Next week",
         "Last month",
+        "Next month",
+        "Next_day",
+        "Yesterday",
+        "Reach lifetime",
         "Custom"
       ],
       "options": {

@@ -65,7 +65,7 @@ class Component(ComponentBase):
         date_range = params.get(KEY_DATE_RANGE)
         ad_unit_view = params.get(KEY_AD_UNIT_VIEW)
 
-        date_from, date_to = self.get_date_range(date_from, date_to, date_range)
+        date_from, date_to, dynamic_date = self.get_date_range(date_from, date_to, date_range)
 
         try:
             client = GoogleAdManagerClient(client_email, private_key, token_uri, network_code, API_VERSION)
@@ -76,7 +76,8 @@ class Component(ComponentBase):
 
         report_query = client.get_report_query(dimensions, metrics, timezone,
                                                dimension_attributes=dimension_attributes, date_from=date_from,
-                                               date_to=date_to, currency=report_currency, ad_unit_view=ad_unit_view)
+                                               date_to=date_to, dynamic_date=dynamic_date, currency=report_currency,
+                                               ad_unit_view=ad_unit_view)
 
         try:
             result_file = client.fetch_report_result(report_query)
@@ -129,6 +130,7 @@ class Component(ComponentBase):
         return start_day_of_prev_month, last_day_of_prev_month
 
     def get_date_range(self, date_from, date_to, date_range):
+        dynamic_date = ""
         if date_range == "Last week (sun-sat)":
             date_from, date_to = self.get_last_week_dates()
         elif date_range == "Last month":
@@ -136,9 +138,19 @@ class Component(ComponentBase):
         elif date_range == "Custom":
             date_from = dateparser.parse(date_from).date()
             date_to = dateparser.parse(date_to).date()
+        elif date_range == "Next week":
+            dynamic_date = "NEXT_WEEK"
+        elif date_range == "Next month":
+            dynamic_date = "NEXT_MONTH"
+        elif date_range == "Reach lifetime":
+            dynamic_date = "REACH_LIFETIME"
+        elif date_range == "Next day":
+            dynamic_date = "NEXT_DAY"
+        elif date_range == "Yesterday":
+            dynamic_date = "YESTERDAY"
         else:
             logging.info("No date range specified")
-        return date_from, date_to
+        return date_from, date_to, dynamic_date
 
     def normalize_report_name(self, report_name):
         header_normalizer = get_normalizer(strategy=NormalizerStrategy.DEFAULT, forbidden_sub="_")
