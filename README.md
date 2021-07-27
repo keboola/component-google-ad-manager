@@ -38,3 +38,7 @@ Eg. CTR in the Ad exchange report type is AD_EXCHANGE_CTR in the API.
   - Custom - must then specify date from and to (3 days ago to 1 day ago) (1 march 2021 to 23 march 2021)
 - Date to (date_to) - [OPT] 4 days ago, yeserday, August 14, 2020 EST (it uses [dateparser](https://pypi.org/project/dateparser/))
 - Date from (date_from) - [OPT]
+- Ad Unit view (ad_unit_view) [OPT] - Ad unit view describes how data is fetched about ad units, Default TOP_LEVEL: 
+  - TOP_LEVEL : Only the top level ad units. Metrics include events for their descendants that are not filtered out.
+  - FLAT : All the ad units. Metrics do not include events for the descendants.
+  - HIERARCHICAL : Use the ad unit hierarchy. There will be as many ad unit columns as levels of ad units in the generated report

@@ -32,19 +32,19 @@
     "dimensions": {
       "title": "Dimensions",
       "type": "string",
-      "description": "List of dimensions to use for the report",
+      "description": "List of dimensions to use for the report, find supported dimensions for specific report types in the documentation",
       "propertyOrder": 3
     },
     "dimension_attributes": {
       "title": "Dimension Attributes",
       "type": "string",
-      "description": "List of dimensions attributes to use for the report",
+      "description": "List of dimensions attributes to use for the report, find supported dimension attributes for specific report types in the documentation",
       "propertyOrder": 4
     },
     "metrics": {
       "title": "Metrics",
       "type": "string",
-      "description": "List of metrics to use for the report",
+      "description": "List of metrics to use for the report, find supported metrics for specific report types in the documentation",
       "propertyOrder": 5
     },
     "timezone": {
@@ -71,11 +71,6 @@
         "Reach lifetime",
         "Custom"
       ],
-      "options": {
-        "dependencies": {
-          "date_range_type": "DYNAMIC"
-        }
-      },
       "propertyOrder": 8
     },
     "date_from": {
@@ -119,6 +114,7 @@
         "TOP_LEVEL",
         "HIERARCHICAL"
       ],
+      "description": "Ad unit view describes how data is fetched about ad units, data can be fetched for all ad units with Flat, only top level ad units with Top level, or Hierarchically",
       "default": "Object",
       "propertyOrder": 12
     }

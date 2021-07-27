@@ -9,8 +9,9 @@ import os
 import re
 from datetime import date
 from datetime import timedelta
+from typing import List
 
-from google_ad_manager.ad_manager_client import GoogleAdManagerClient
+from google_ad_manager import GoogleAdManagerClient
 from keboola.utils.header_normalizer import get_normalizer, NormalizerStrategy
 from keboola.component.base import ComponentBase, UserException
 from googleads import errors as google_errors
@@ -97,12 +98,12 @@ class Component(ComponentBase):
         self.write_tabledef_manifest(table)
 
     @staticmethod
-    def normalize_column_names(output_columns):
+    def normalize_column_names(output_columns: List) -> List:
         header_normalizer = get_normalizer(strategy=NormalizerStrategy.DEFAULT, forbidden_sub="_")
         return header_normalizer.normalize_header(output_columns)
 
     @staticmethod
-    def write_results_get_columns(in_table_path, out_table_path):
+    def write_results_get_columns(in_table_path: str, out_table_path: str) -> List:
         with open(in_table_path, mode="r") as in_file:
             reader = csv.DictReader(in_file)
             with open(out_table_path, mode='wt', encoding='utf-8', newline='') as out_file:
@@ -111,25 +112,27 @@ class Component(ComponentBase):
                     writer.writerow(result)
                 return reader.fieldnames
 
-    def parse_input_string_to_list(self, input_string):
+    @staticmethod
+    def parse_input_string_to_list(input_string: str) -> List:
         input_string = re.sub(r"[^a-zA-Z0-9_,]", '', input_string)
         input_list = input_string.split(",")
         return [word.strip() for word in input_list]
 
     @staticmethod
-    def get_last_week_dates():
+    def get_last_week_dates() -> (date, date):
         today = date.today()
         offset = (today.weekday() - 5) % 7
         last_week_saturday = today - timedelta(days=offset)
         last_week_sunday = last_week_saturday - timedelta(days=6)
         return last_week_sunday, last_week_saturday
 
-    def get_last_month_dates(self):
+    @staticmethod
+    def get_last_month_dates() -> (date, date):
         last_day_of_prev_month = date.today().replace(day=1) - timedelta(days=1)
         start_day_of_prev_month = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
         return start_day_of_prev_month, last_day_of_prev_month
 
-    def get_date_range(self, date_from, date_to, date_range):
+    def get_date_range(self, date_from: str, date_to: str, date_range: str) -> (date, date, str):
         dynamic_date = ""
         if date_range == "Last week (sun-sat)":
             date_from, date_to = self.get_last_week_dates()
@@ -152,7 +155,8 @@ class Component(ComponentBase):
             logging.info("No date range specified")
         return date_from, date_to, dynamic_date
 
-    def normalize_report_name(self, report_name):
+    @staticmethod
+    def normalize_report_name(report_name: str) -> str:
         header_normalizer = get_normalizer(strategy=NormalizerStrategy.DEFAULT, forbidden_sub="_")
         return header_normalizer.normalize_header([report_name])[0]
 

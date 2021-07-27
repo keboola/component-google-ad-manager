@@ -3,6 +3,8 @@ import logging
 import yaml
 import json
 import tempfile
+from typing import List
+from datetime import date
 from googleads import ad_manager
 from googleads import errors
 from googleads.common import ZeepServiceProxy
@@ -19,7 +21,7 @@ class GoogleAdManagerClient:
         self.report_downloader = self.client.GetDataDownloader(version=api_version)
 
     @staticmethod
-    def get_client(network_code, private_key_file):
+    def get_client(network_code: str, private_key_file: str) -> ad_manager.AdManagerClient:
         try:
             client = ad_manager.AdManagerClient.LoadFromString(yaml.dump({
                 "ad_manager": {
@@ -37,7 +39,7 @@ class GoogleAdManagerClient:
         return client
 
     @staticmethod
-    def get_private_key_file(private_key, client_email, token_uri) -> str:
+    def get_private_key_file(private_key: str, client_email: str, token_uri: str) -> str:
         file_path = "/tmp/private_key.json"
         with open(file_path, 'w') as outfile:
             json.dump({
@@ -48,8 +50,9 @@ class GoogleAdManagerClient:
         return file_path
 
     @staticmethod
-    def get_report_query(dimensions, metrics, timezone, dimension_attributes="", ad_unit_view="", currency="",
-                         date_from="", date_to="", dynamic_date=""):
+    def get_report_query(dimensions: List, metrics: List, timezone: str, dimension_attributes: List = [],
+                         ad_unit_view: str = "", currency: str = "", date_from: date = "", date_to: date = "",
+                         dynamic_date: str = "") -> dict:
         report_query = {
             'dimensions': dimensions,
             'columns': metrics,
@@ -74,7 +77,7 @@ class GoogleAdManagerClient:
         logging.info(f"Running query : {report_query}")
         return report_query
 
-    def fetch_report_result(self, report_query):
+    def fetch_report_result(self, report_query: dict) -> tempfile.NamedTemporaryFile:
         report_file = tempfile.NamedTemporaryFile(
             suffix='.csv', delete=False
         )
