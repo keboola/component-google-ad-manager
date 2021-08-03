@@ -25,7 +25,6 @@ KEY_CLIENT_EMAIL = "client_email"
 KEY_PRIVATE_KEY = "#private_key"
 KEY_TOKEN_URI = "token_uri"
 KEY_NETWORK_CODE = "network_code"
-
 KEY_REPORT_SETTINGS = "report_settings"
 KEY_REPORT_TYPE = "report_type"
 KEY_REPORT_NAME = "report_name"
@@ -70,7 +69,6 @@ class Component(ComponentBase):
         date_from = date_settings.get(KEY_DATE_FROM)
         date_to = date_settings.get(KEY_DATE_TO)
         date_range = date_settings.get(KEY_DATE_RANGE)
-
 
         date_from, date_to, dynamic_date = self.get_date_range(date_from, date_to, date_range)
 
