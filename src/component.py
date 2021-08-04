@@ -1,7 +1,3 @@
-'''
-Template Component main class.
-
-'''
 import csv
 import logging
 import dateparser

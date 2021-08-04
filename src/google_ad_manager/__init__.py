@@ -1,1 +1,1 @@
-from .ad_manager_client import GoogleAdManagerClient  # noqa
+from .client import GoogleAdManagerClient  # noqa
