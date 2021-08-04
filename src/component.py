@@ -25,11 +25,13 @@ KEY_CLIENT_EMAIL = "client_email"
 KEY_PRIVATE_KEY = "#private_key"
 KEY_TOKEN_URI = "token_uri"
 KEY_NETWORK_CODE = "network_code"
+KEY_REPORT_SETTINGS = "report_settings"
 KEY_REPORT_TYPE = "report_type"
 KEY_REPORT_NAME = "report_name"
 KEY_METRICS = "metrics"
 KEY_DIMENSIONS = "dimensions"
 KEY_DIMENSION_ATTRIBUTES = "dimension_attributes"
+KEY_DATE_RANGE_SETTINGS = "date_settings"
 KEY_TIMEZONE = "timezone"
 KEY_DATE_FROM = "date_from"
 KEY_DATE_TO = "date_to"
@@ -37,8 +39,8 @@ KEY_DATE_RANGE = "date_range"
 KEY_REPORT_CURRENCY = "report_currency"
 KEY_AD_UNIT_VIEW = "ad_unit_view"
 
-REQUIRED_PARAMETERS = [KEY_CLIENT_EMAIL, KEY_PRIVATE_KEY, KEY_TOKEN_URI, KEY_NETWORK_CODE, KEY_REPORT_TYPE,
-                       KEY_REPORT_NAME, KEY_METRICS, KEY_DIMENSIONS, KEY_TIMEZONE]
+REQUIRED_PARAMETERS = [KEY_CLIENT_EMAIL, KEY_PRIVATE_KEY, KEY_TOKEN_URI, KEY_NETWORK_CODE, KEY_REPORT_SETTINGS,
+                       KEY_REPORT_NAME, KEY_DATE_RANGE_SETTINGS]
 REQUIRED_IMAGE_PARS = []
 
 
@@ -56,15 +58,17 @@ class Component(ComponentBase):
         network_code = params.get(KEY_NETWORK_CODE)
         report_name = params.get(KEY_REPORT_NAME)
         report_name = "".join([self.normalize_report_name(report_name), ".csv"])
-        metrics = self.parse_input_string_to_list(params.get(KEY_METRICS))
-        dimensions = self.parse_input_string_to_list(params.get(KEY_DIMENSIONS))
-        dimension_attributes = self.parse_input_string_to_list(params.get(KEY_DIMENSION_ATTRIBUTES))
-        timezone = params.get(KEY_TIMEZONE)
-        date_from = params.get(KEY_DATE_FROM)
-        date_to = params.get(KEY_DATE_TO)
-        report_currency = params.get(KEY_REPORT_CURRENCY)
-        date_range = params.get(KEY_DATE_RANGE)
-        ad_unit_view = params.get(KEY_AD_UNIT_VIEW)
+        report_settings = params.get(KEY_REPORT_SETTINGS)
+        metrics = self.parse_input_string_to_list(report_settings.get(KEY_METRICS))
+        dimensions = self.parse_input_string_to_list(report_settings.get(KEY_DIMENSIONS))
+        dimension_attributes = self.parse_input_string_to_list(report_settings.get(KEY_DIMENSION_ATTRIBUTES))
+        report_currency = report_settings.get(KEY_REPORT_CURRENCY)
+        ad_unit_view = report_settings.get(KEY_AD_UNIT_VIEW)
+        date_settings = params.get(KEY_DATE_RANGE_SETTINGS)
+        timezone = date_settings.get(KEY_TIMEZONE)
+        date_from = date_settings.get(KEY_DATE_FROM)
+        date_to = date_settings.get(KEY_DATE_TO)
+        date_range = date_settings.get(KEY_DATE_RANGE)
 
         date_from, date_to, dynamic_date = self.get_date_range(date_from, date_to, date_range)
 

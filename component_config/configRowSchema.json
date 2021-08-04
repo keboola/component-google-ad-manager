@@ -2,121 +2,140 @@
   "title": "Report Configuration",
   "type": "object",
   "required": [
-    "report_type",
-    "report_name",
-    "metrics",
-    "dimensions",
-    "timezone",
-    "date_range"
+    "report_name"
   ],
   "properties": {
-    "report_type": {
-      "title": "Report type",
-      "type": "string",
-      "enum": [
-        "Historical",
-        "Future sell - through",
-        "Reach",
-        "Ad Exchange",
-        "Ad speed"
-      ],
-      "default": "Object",
-      "propertyOrder": 1
-    },
     "report_name": {
-      "title": "Report Name",
+      "title": "Output Name",
       "type": "string",
       "description": "Name of output table of the report eg. historical_report",
-      "propertyOrder": 2
-    },
-    "dimensions": {
-      "title": "Dimensions",
-      "type": "string",
-      "description": "List of dimensions to use for the report, find supported dimensions for specific report types in the documentation",
-      "propertyOrder": 3
-    },
-    "dimension_attributes": {
-      "title": "Dimension Attributes",
-      "type": "string",
-      "description": "List of dimensions attributes to use for the report, find supported dimension attributes for specific report types in the documentation",
-      "propertyOrder": 4
-    },
-    "metrics": {
-      "title": "Metrics",
-      "type": "string",
-      "description": "List of metrics to use for the report, find supported metrics for specific report types in the documentation",
-      "propertyOrder": 5
-    },
-    "timezone": {
-      "title": "Timezone",
-      "type": "string",
-      "enum": [
-        "PUBLISHER",
-        "AD_EXCHANGE",
-        "UNKNOWN"
-      ],
-      "default": "Object",
-      "propertyOrder": 6
-    },
-    "date_range": {
-      "title": "Dynamic date range",
-      "type": "string",
-      "enum": [
-        "Last week (sun-sat)",
-        "Next week",
-        "Last month",
-        "Next month",
-        "Next_day",
-        "Yesterday",
-        "Reach lifetime",
-        "Custom"
-      ],
-      "propertyOrder": 8
-    },
-    "date_from": {
-      "title": "Date from",
-      "type": "string",
-      "options": {
-        "dependencies": {
-          "date_range": "Custom"
-        }
-      },
-      "description": "Start date of the report eg. 3 days ago",
-      "propertyOrder": 9
-    },
-    "date_to": {
-      "title": "Date to",
-      "type": "string",
-      "options": {
-        "dependencies": {
-          "date_range": "Custom"
-        }
-      },
-      "description": "End date of the report eg. 1 day ago",
       "propertyOrder": 10
     },
-    "report_currency": {
-      "title": "Report currency",
-      "type": "string",
-      "options": {
-        "dependencies": {
-          "report_type": "Ad Exchange"
-        }
-      },
-      "description": "Report currency",
-      "propertyOrder": 11
-    },
-    "ad_unit_view": {
-      "title": "Ad unit view",
-      "type": "string",
-      "enum": [
-        "FLAT",
-        "TOP_LEVEL",
-        "HIERARCHICAL"
+    "report_settings": {
+      "type": "object",
+      "title": "Report settings",
+      "required": [
+        "report_type",
+        "metrics",
+        "dimensions",
+        "ad_unit_view"
       ],
-      "description": "Ad unit view describes how data is fetched about ad units, data can be fetched for all ad units with Flat, only top level ad units with Top level, or Hierarchically",
-      "default": "Object",
-      "propertyOrder": 12
+      "propertyOrder": 100,
+      "properties": {
+        "report_type": {
+          "title": "Report type",
+          "type": "string",
+          "enum": [
+            "Historical",
+            "Future sell - through",
+            "Reach",
+            "Ad Exchange",
+            "Ad speed"
+          ],
+          "default": "Object",
+          "propertyOrder": 1
+        },
+        "dimensions": {
+          "title": "Dimensions",
+          "type": "string",
+          "description": "List of dimensions to use for the report, find supported dimensions for specific report types in the documentation",
+          "propertyOrder": 3
+        },
+        "dimension_attributes": {
+          "title": "Dimension Attributes",
+          "type": "string",
+          "description": "List of dimensions attributes to use for the report, find supported dimension attributes for specific report types in the documentation",
+          "propertyOrder": 4
+        },
+        "metrics": {
+          "title": "Metrics",
+          "type": "string",
+          "description": "List of metrics to use for the report, find supported metrics for specific report types in the documentation",
+          "propertyOrder": 5
+        },
+        "report_currency": {
+          "title": "Report currency",
+          "type": "string",
+          "options": {
+            "dependencies": {
+              "report_type": "Ad Exchange"
+            }
+          },
+          "description": "Report currency",
+          "propertyOrder": 11
+        },
+        "ad_unit_view": {
+          "title": "Ad unit view",
+          "type": "string",
+          "enum": [
+            "FLAT",
+            "TOP_LEVEL",
+            "HIERARCHICAL"
+          ],
+          "description": "Ad unit view describes how data is fetched about ad units, data can be fetched for all ad units with Flat, only top level ad units with Top level, or Hierarchically",
+          "default": "Object",
+          "propertyOrder": 12
+        }
+      }
+    },
+    "date_settings": {
+      "type": "object",
+      "title": "Date range",
+      "propertyOrder": 100,
+      "required": [
+        "timezone",
+        "date_range"
+      ],
+      "properties": {
+        "timezone": {
+          "title": "Timezone",
+          "type": "string",
+          "enum": [
+            "PUBLISHER",
+            "AD_EXCHANGE",
+            "UNKNOWN"
+          ],
+          "default": "Object",
+          "propertyOrder": 6
+        },
+        "date_range": {
+          "title": "Dynamic date range",
+          "type": "string",
+          "enum": [
+            "Last week (sun-sat)",
+            "Next week",
+            "Last month",
+            "Next month",
+            "Next_day",
+            "Yesterday",
+            "Reach lifetime",
+            "Custom"
+          ],
+          "propertyOrder": 8
+        },
+        "date_from": {
+          "title": "Date from",
+          "type": "string",
+          "options": {
+            "dependencies": {
+              "date_range": "Custom"
+            }
+          },
+          "description": "Start date of the report eg. 3 days ago",
+          "propertyOrder": 9
+        },
+        "date_to": {
+          "title": "Date to",
+          "type": "string",
+          "options": {
+            "dependencies": {
+              "date_range": "Custom"
+            }
+          },
+          "description": "End date of the report eg. 1 day ago",
+          "propertyOrder": 10
+        }
+      }
     }
   }
 }
