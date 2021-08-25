@@ -104,7 +104,7 @@ class Component(ComponentBase):
 
     @staticmethod
     def write_results_get_columns(in_table_path: str, out_table_path: str) -> List:
-        with open(in_table_path, mode="r") as in_file:
+        with open(in_table_path, mode="r", errors='ignore') as in_file:
             reader = csv.DictReader(in_file)
             with open(out_table_path, mode='wt', encoding='utf-8', newline='') as out_file:
                 writer = csv.DictWriter(out_file, reader.fieldnames)
