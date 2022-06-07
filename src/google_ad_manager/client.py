@@ -52,12 +52,13 @@ class GoogleAdManagerClient:
         return file_path
 
     @staticmethod
-    def get_report_query(dimensions: List, metrics: List, dimension_attributes: List = None,
+    def get_report_query(dimensions: List, metrics: List, timezone: str, dimension_attributes: List = None,
                          ad_unit_view: str = "", currency: str = "", date_from: date = "", date_to: date = "",
                          dynamic_date: str = "") -> dict:
         report_query = {
             'dimensions': dimensions,
-            'columns': metrics
+            'columns': metrics,
+            'timeZoneType': timezone
         }
         if dynamic_date:
             report_query["dateRangeType"] = dynamic_date
@@ -73,7 +74,7 @@ class GoogleAdManagerClient:
             report_query['adUnitView'] = ad_unit_view
 
         if currency:
-            report_query['reportCurrency'] = currency
+            report_query['adxReportCurrency'] = currency
 
         logging.info(f"Running query : {report_query}")
         return report_query

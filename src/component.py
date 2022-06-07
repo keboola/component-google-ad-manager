@@ -13,7 +13,7 @@ from keboola.component.base import ComponentBase, UserException
 from googleads import errors as google_errors
 from google.auth import exceptions
 
-API_VERSION = "v202205"
+API_VERSION = "v202202"
 
 KEY_CLIENT_EMAIL = "client_email"
 KEY_PRIVATE_KEY = "#private_key"
@@ -59,6 +59,7 @@ class Component(ComponentBase):
         report_currency = report_settings.get(KEY_REPORT_CURRENCY)
         ad_unit_view = report_settings.get(KEY_AD_UNIT_VIEW)
         date_settings = params.get(KEY_DATE_RANGE_SETTINGS)
+        timezone = date_settings.get(KEY_TIMEZONE)
         date_from = date_settings.get(KEY_DATE_FROM)
         date_to = date_settings.get(KEY_DATE_TO)
         date_range = date_settings.get(KEY_DATE_RANGE)
@@ -74,7 +75,7 @@ class Component(ComponentBase):
         except GoogleAdManagerClientException as client_error:
             raise UserException(client_error) from client_error
 
-        report_query = client.get_report_query(dimensions, metrics,
+        report_query = client.get_report_query(dimensions, metrics,timezone,
                                                dimension_attributes=dimension_attributes, date_from=date_from,
                                                date_to=date_to, dynamic_date=dynamic_date, currency=report_currency,
                                                ad_unit_view=ad_unit_view)
