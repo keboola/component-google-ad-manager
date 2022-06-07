@@ -58,7 +58,7 @@ class Component(ComponentBase):
         dimension_attributes = self.parse_input_string_to_list(report_settings.get(KEY_DIMENSION_ATTRIBUTES))
         report_currency = report_settings.get(KEY_REPORT_CURRENCY)
         ad_unit_view = report_settings.get(KEY_AD_UNIT_VIEW)
-        date_settings = params.get(KEY_DATE_RANGE_SETTINGS)
+        date_settings = params.get(KEY_DATE_RANGE_SETTINGS, {})
         timezone = date_settings.get(KEY_TIMEZONE)
         date_from = date_settings.get(KEY_DATE_FROM)
         date_to = date_settings.get(KEY_DATE_TO)
@@ -141,8 +141,11 @@ class Component(ComponentBase):
         elif date_range == "Last month":
             date_from, date_to = self.get_last_month_dates()
         elif date_range == "Custom":
-            date_from = dateparser.parse(date_from).date()
-            date_to = dateparser.parse(date_to).date()
+            try:
+                date_from = dateparser.parse(date_from).date()
+                date_to = dateparser.parse(date_to).date()
+            except (AttributeError, TypeError) as err:
+                raise UserException("Failed to parse custom date") from err
         elif date_range == "Next week":
             dynamic_date = "NEXT_WEEK"
         elif date_range == "Next month":
