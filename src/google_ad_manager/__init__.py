@@ -1,1 +1,1 @@
-from .client import GoogleAdManagerClient  # noqa
+from .client import GoogleAdManagerClient, GoogleAdManagerClientException  # noqa

@@ -1,4 +1,3 @@
-import sys
 import logging
 import yaml
 import json
@@ -8,6 +7,10 @@ from datetime import date
 from googleads import ad_manager
 from googleads import errors
 from googleads.common import ZeepServiceProxy
+
+
+class GoogleAdManagerClientException(Exception):
+    pass
 
 
 class GoogleAdManagerClient:
@@ -31,10 +34,9 @@ class GoogleAdManagerClient:
                 }
             }))
         except ValueError as e:
-            raise ValueError(
-                f"{e} Please, check format of your private key. New lines"
-                f" must be delimited by \\n character."
-            )
+            raise GoogleAdManagerClientException(f"{e} Please, check format of your private key. "
+                                                 f"New lines must be delimited by \\n character.") from e
+
         client.cache = ZeepServiceProxy.NO_CACHE
         return client
 
@@ -50,13 +52,12 @@ class GoogleAdManagerClient:
         return file_path
 
     @staticmethod
-    def get_report_query(dimensions: List, metrics: List, timezone: str, dimension_attributes: List = [],
+    def get_report_query(dimensions: List, metrics: List, dimension_attributes: List = None,
                          ad_unit_view: str = "", currency: str = "", date_from: date = "", date_to: date = "",
                          dynamic_date: str = "") -> dict:
         report_query = {
             'dimensions': dimensions,
-            'columns': metrics,
-            'timeZoneType': timezone
+            'columns': metrics
         }
         if dynamic_date:
             report_query["dateRangeType"] = dynamic_date
@@ -98,9 +99,6 @@ class GoogleAdManagerClient:
     def create_report(self, report_job: dict):
         """Create report via API"""
         try:
-            # Run the report and wait for it to finish
-            report_job_id = self.report_downloader.WaitForReport(report_job)
-            return report_job_id
+            return self.report_downloader.WaitForReport(report_job)
         except errors.AdManagerReportError as e:
-            logging.info('Failed to generate report. Error: %s' % e)
-            sys.exit()
+            raise GoogleAdManagerClientException(f'Failed to generate report. Error: {e}') from e

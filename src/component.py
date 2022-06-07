@@ -7,15 +7,13 @@ from datetime import date
 from datetime import timedelta
 from typing import List
 
-from google_ad_manager import GoogleAdManagerClient
+from google_ad_manager import GoogleAdManagerClient, GoogleAdManagerClientException
 from keboola.utils.header_normalizer import get_normalizer, NormalizerStrategy
 from keboola.component.base import ComponentBase, UserException
 from googleads import errors as google_errors
 from google.auth import exceptions
 
-# Deprecation = February 2022
-# Sunset = May 2022
-API_VERSION = "v202105"
+API_VERSION = "v202205"
 
 KEY_CLIENT_EMAIL = "client_email"
 KEY_PRIVATE_KEY = "#private_key"
@@ -61,7 +59,6 @@ class Component(ComponentBase):
         report_currency = report_settings.get(KEY_REPORT_CURRENCY)
         ad_unit_view = report_settings.get(KEY_AD_UNIT_VIEW)
         date_settings = params.get(KEY_DATE_RANGE_SETTINGS)
-        timezone = date_settings.get(KEY_TIMEZONE)
         date_from = date_settings.get(KEY_DATE_FROM)
         date_to = date_settings.get(KEY_DATE_TO)
         date_range = date_settings.get(KEY_DATE_RANGE)
@@ -74,8 +71,10 @@ class Component(ComponentBase):
             raise UserException(client_error) from client_error
         except exceptions.RefreshError as login_error:
             raise UserException(login_error) from login_error
+        except GoogleAdManagerClientException as client_error:
+            raise UserException(client_error) from client_error
 
-        report_query = client.get_report_query(dimensions, metrics, timezone,
+        report_query = client.get_report_query(dimensions, metrics,
                                                dimension_attributes=dimension_attributes, date_from=date_from,
                                                date_to=date_to, dynamic_date=dynamic_date, currency=report_currency,
                                                ad_unit_view=ad_unit_view)
@@ -84,6 +83,8 @@ class Component(ComponentBase):
             result_file = client.fetch_report_result(report_query)
         except google_errors.GoogleAdsServerFault as google_error:
             raise UserException(google_error) from google_error
+        except GoogleAdManagerClientException as client_error:
+            raise UserException(client_error) from client_error
 
         filesize = os.path.getsize(result_file.name)
         if filesize == 0:
