@@ -73,7 +73,7 @@ class GoogleAdManagerClient:
             report_query['adUnitView'] = ad_unit_view
 
         if currency:
-            report_query['adxReportCurrency'] = currency
+            report_query['reportCurrency'] = currency
 
         logging.info(f"Running query : {report_query}")
         return report_query
