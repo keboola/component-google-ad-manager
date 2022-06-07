@@ -75,7 +75,7 @@ class Component(ComponentBase):
         except GoogleAdManagerClientException as client_error:
             raise UserException(client_error) from client_error
 
-        report_query = client.get_report_query(dimensions, metrics,timezone,
+        report_query = client.get_report_query(dimensions, metrics, timezone,
                                                dimension_attributes=dimension_attributes, date_from=date_from,
                                                date_to=date_to, dynamic_date=dynamic_date, currency=report_currency,
                                                ad_unit_view=ad_unit_view)
