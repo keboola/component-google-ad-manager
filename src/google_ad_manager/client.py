@@ -93,7 +93,8 @@ class GoogleAdManagerClient:
             report_job_id=report_job_id,
             export_format='CSV_DUMP',
             outfile=report_file,
-            use_gzip_compression=False
+            use_gzip_compression=False,
+            include_zero_impressions=True
         )
         return report_file
 
