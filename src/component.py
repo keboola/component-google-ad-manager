@@ -94,8 +94,7 @@ class Component(ComponentBase):
         if filesize == 0:
             raise UserException("No data found")
 
-        table = self.create_out_table_definition(report_name,
-                                                 incremental=False)
+        table = self.create_out_table_definition(report_name, incremental=False)
         columns = self.write_results_get_columns(result_file.name, table.full_path)
         columns = self.normalize_column_names(columns)
         table.columns = columns

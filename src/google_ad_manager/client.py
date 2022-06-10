@@ -91,13 +91,16 @@ class GoogleAdManagerClient:
         report_job_id = self.create_report(report_job)
 
         if include_zero_impressions:
-            self.report_downloader.DownloadReportToFile(
-                report_job_id=report_job_id,
-                export_format='CSV_DUMP',
-                outfile=report_file,
-                use_gzip_compression=False,
-                include_zero_impressions=True
-            )
+            try:
+                self.report_downloader.DownloadReportToFile(
+                    report_job_id=report_job_id,
+                    export_format='CSV_DUMP',
+                    outfile=report_file,
+                    use_gzip_compression=False,
+                    include_zero_impressions=True
+                )
+            except errors.GoogleAdsError as exc:
+                raise GoogleAdManagerClientException(exc) from exc
         else:
             self.report_downloader.DownloadReportToFile(
                 report_job_id=report_job_id,
