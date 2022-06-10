@@ -75,6 +75,14 @@
           "description": "Ad unit view describes how data is fetched about ad units, data can be fetched for all ad units with Flat, only top level ad units with Top level, or Hierarchically",
           "default": "Object",
           "propertyOrder": 80
+        },
+        "include_zero_impressions": {
+          "title": "Include zero impressions",
+          "type": "boolean",
+          "format" : "checkbox",
+          "description": "If your report supports this, you can download data of ads with zer impressions",
+          "default": false,
+          "propertyOrder": 90
         }
       }
     },

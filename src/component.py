@@ -25,6 +25,7 @@ KEY_REPORT_NAME = "report_name"
 KEY_METRICS = "metrics"
 KEY_DIMENSIONS = "dimensions"
 KEY_DIMENSION_ATTRIBUTES = "dimension_attributes"
+KEY_INCLUDE_ZERO_IMPRESSIONS = "include_zero_impressions"
 KEY_DATE_RANGE_SETTINGS = "date_settings"
 KEY_TIMEZONE = "timezone"
 KEY_DATE_FROM = "date_from"
@@ -64,6 +65,8 @@ class Component(ComponentBase):
         date_to = date_settings.get(KEY_DATE_TO)
         date_range = date_settings.get(KEY_DATE_RANGE)
 
+        include_zero_impressions = params.get(KEY_INCLUDE_ZERO_IMPRESSIONS, False)
+
         date_from, date_to, dynamic_date = self.get_date_range(date_from, date_to, date_range)
 
         try:
@@ -81,7 +84,7 @@ class Component(ComponentBase):
                                                ad_unit_view=ad_unit_view)
 
         try:
-            result_file = client.fetch_report_result(report_query)
+            result_file = client.fetch_report_result(report_query, include_zero_impressions)
         except google_errors.GoogleAdsServerFault as google_error:
             raise UserException(google_error) from google_error
         except GoogleAdManagerClientException as client_error:
