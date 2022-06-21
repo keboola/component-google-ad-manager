@@ -54,7 +54,7 @@ class GoogleAdManagerClient:
     @staticmethod
     def get_report_query(dimensions: List, metrics: List, timezone: str, dimension_attributes: List = None,
                          ad_unit_view: str = "", currency: str = "", date_from: date = "", date_to: date = "",
-                         dynamic_date: str = "") -> dict:
+                         dynamic_date: str = "", include_zero_impressions: bool = False) -> dict:
         report_query = {
             'dimensions': dimensions,
             'columns': metrics,
@@ -76,11 +76,13 @@ class GoogleAdManagerClient:
         if currency:
             report_query['adxReportCurrency'] = currency
 
+        if include_zero_impressions:
+            report_query['include_zero_impressions'] = True
+
         logging.info(f"Running query : {report_query}")
         return report_query
 
-    def fetch_report_result(self, report_query: dict,
-                            include_zero_impressions: bool = False) -> tempfile.NamedTemporaryFile:
+    def fetch_report_result(self, report_query: dict) -> tempfile.NamedTemporaryFile:
         report_file = tempfile.NamedTemporaryFile(
             suffix='.csv', delete=False
         )
@@ -90,24 +92,13 @@ class GoogleAdManagerClient:
 
         report_job_id = self.create_report(report_job)
 
-        if include_zero_impressions:
-            try:
-                self.report_downloader.DownloadReportToFile(
-                    report_job_id=report_job_id,
-                    export_format='CSV_DUMP',
-                    outfile=report_file,
-                    use_gzip_compression=False,
-                    include_zero_impressions=True
-                )
-            except errors.GoogleAdsError as exc:
-                raise GoogleAdManagerClientException(exc) from exc
-        else:
-            self.report_downloader.DownloadReportToFile(
-                report_job_id=report_job_id,
-                export_format='CSV_DUMP',
-                outfile=report_file,
-                use_gzip_compression=False
-            )
+        self.report_downloader.DownloadReportToFile(
+            report_job_id=report_job_id,
+            export_format='CSV_DUMP',
+            outfile=report_file,
+            use_gzip_compression=False
+        )
+
         return report_file
 
     def create_report(self, report_job: dict):
