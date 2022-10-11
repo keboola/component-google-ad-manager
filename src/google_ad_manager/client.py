@@ -83,21 +83,17 @@ class GoogleAdManagerClient:
         return report_query
 
     def fetch_report_result(self, report_query: dict) -> tempfile.NamedTemporaryFile:
-        report_file = tempfile.NamedTemporaryFile(
-            suffix='.csv', delete=False
-        )
-        report_job = {
-            'reportQuery': report_query
-        }
-
+        report_file = tempfile.NamedTemporaryFile(suffix='.csv', delete=False)
+        report_job = {'reportQuery': report_query}
         report_job_id = self.create_report(report_job)
 
         self.report_downloader.DownloadReportToFile(
             report_job_id=report_job_id,
             export_format='CSV_DUMP',
             outfile=report_file,
-            use_gzip_compression=False
-        )
+            use_gzip_compression=False)
+
+        report_file.close()
 
         return report_file
 
