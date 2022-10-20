@@ -1,4 +1,5 @@
 import logging
+
 import yaml
 import json
 import tempfile
@@ -22,6 +23,7 @@ class GoogleAdManagerClient:
 
         self.client = self.get_client(network_code, private_key_file)
         self.report_downloader = self.client.GetDataDownloader(version=api_version)
+        self.max_retry_count = 5
 
     @staticmethod
     def get_client(network_code: str, private_key_file: str) -> ad_manager.AdManagerClient:
@@ -87,11 +89,22 @@ class GoogleAdManagerClient:
         report_job = {'reportQuery': report_query}
         report_job_id = self.create_report(report_job)
 
-        self.report_downloader.DownloadReportToFile(
-            report_job_id=report_job_id,
-            export_format='CSV_DUMP',
-            outfile=report_file,
-            use_gzip_compression=False)
+        retry_count = 0
+        done = False
+        while not done and retry_count <= self.max_retry_count:
+            try:
+                self.report_downloader.DownloadReportToFile(
+                    report_job_id=report_job_id,
+                    export_format='CSV_DUMP',
+                    outfile=report_file,
+                    use_gzip_compression=False)
+                done = True
+            except errors.GoogleAdsServerFault:
+                retry_count += 1
+                logging.warning(f"Encountered Google Server Error, Retrying: {retry_count}/{self.max_retry_count}")
+            if retry_count > self.max_retry_count:
+                raise GoogleAdManagerClientException(f"Maximum number of retries has been reached for"
+                                                     f" job id {report_job_id}.")
 
         report_file.close()
 
