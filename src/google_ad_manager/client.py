@@ -96,7 +96,7 @@ class GoogleAdManagerClient:
                 outfile=report_file,
                 use_gzip_compression=False)
         except errors.GoogleAdsServerFault as e:
-            raise errors.GoogleAdsServerFault("Google Server Error") from e
+            raise errors.GoogleAdsServerFault(f"Google Server Error occured : {e}") from e
 
         report_file.close()
 
