@@ -1,5 +1,4 @@
 import logging
-
 import yaml
 import json
 import tempfile
