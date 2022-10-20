@@ -23,7 +23,7 @@ class GoogleAdManagerClient:
 
         self.client = self.get_client(network_code, private_key_file)
         self.report_downloader = self.client.GetDataDownloader(version=api_version)
-        self.max_retry_count = 1
+        self.max_retry_count = 5
 
     @staticmethod
     def get_client(network_code: str, private_key_file: str) -> ad_manager.AdManagerClient:
