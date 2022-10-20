@@ -23,7 +23,7 @@ class GoogleAdManagerClient:
 
         self.client = self.get_client(network_code, private_key_file)
         self.report_downloader = self.client.GetDataDownloader(version=api_version)
-        self.max_retry_count = 5
+        self.max_retry_count = 1
 
     @staticmethod
     def get_client(network_code: str, private_key_file: str) -> ad_manager.AdManagerClient:
@@ -91,7 +91,7 @@ class GoogleAdManagerClient:
 
         retry_count = 0
         done = False
-        while not done and retry_count <= self.max_retry_count:
+        while not done:
             try:
                 self.report_downloader.DownloadReportToFile(
                     report_job_id=report_job_id,
