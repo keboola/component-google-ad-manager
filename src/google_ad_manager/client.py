@@ -2,6 +2,7 @@ import logging
 import yaml
 import json
 import tempfile
+from retry import retry
 from typing import List
 from datetime import date
 from googleads import ad_manager
@@ -22,7 +23,6 @@ class GoogleAdManagerClient:
 
         self.client = self.get_client(network_code, private_key_file)
         self.report_downloader = self.client.GetDataDownloader(version=api_version)
-        self.max_retry_count = 5
 
     @staticmethod
     def get_client(network_code: str, private_key_file: str) -> ad_manager.AdManagerClient:
@@ -83,27 +83,20 @@ class GoogleAdManagerClient:
         logging.info(f"Running query : {report_query}")
         return report_query
 
+    @retry(errors.GoogleAdsServerFault, tries=5, delay=30)
     def fetch_report_result(self, report_query: dict) -> tempfile.NamedTemporaryFile:
         report_file = tempfile.NamedTemporaryFile(suffix='.csv', delete=False)
         report_job = {'reportQuery': report_query}
         report_job_id = self.create_report(report_job)
 
-        retry_count = 0
-        done = False
-        while not done:
-            try:
-                self.report_downloader.DownloadReportToFile(
-                    report_job_id=report_job_id,
-                    export_format='CSV_DUMP',
-                    outfile=report_file,
-                    use_gzip_compression=False)
-                done = True
-            except errors.GoogleAdsServerFault:
-                retry_count += 1
-                logging.warning(f"Encountered Google Server Error, Retrying: {retry_count}/{self.max_retry_count}")
-            if retry_count > self.max_retry_count:
-                raise GoogleAdManagerClientException(f"Maximum number of retries has been reached for"
-                                                     f" job id {report_job_id}.")
+        try:
+            self.report_downloader.DownloadReportToFile(
+                report_job_id=report_job_id,
+                export_format='CSV_DUMP',
+                outfile=report_file,
+                use_gzip_compression=False)
+        except errors.GoogleAdsServerFault as e:
+            raise errors.GoogleAdsServerFault("Google Server Error") from e
 
         report_file.close()
 
