@@ -2,6 +2,7 @@ import logging
 import yaml
 import json
 import tempfile
+from retry import retry
 from typing import List
 from datetime import date
 from googleads import ad_manager
@@ -82,16 +83,20 @@ class GoogleAdManagerClient:
         logging.info(f"Running query : {report_query}")
         return report_query
 
+    @retry(errors.GoogleAdsServerFault, tries=5, delay=30)
     def fetch_report_result(self, report_query: dict) -> tempfile.NamedTemporaryFile:
         report_file = tempfile.NamedTemporaryFile(suffix='.csv', delete=False)
         report_job = {'reportQuery': report_query}
         report_job_id = self.create_report(report_job)
 
-        self.report_downloader.DownloadReportToFile(
-            report_job_id=report_job_id,
-            export_format='CSV_DUMP',
-            outfile=report_file,
-            use_gzip_compression=False)
+        try:
+            self.report_downloader.DownloadReportToFile(
+                report_job_id=report_job_id,
+                export_format='CSV_DUMP',
+                outfile=report_file,
+                use_gzip_compression=False)
+        except errors.GoogleAdsServerFault as e:
+            raise errors.GoogleAdsServerFault(f"Google Server Error occured : {e}") from e
 
         report_file.close()
 
