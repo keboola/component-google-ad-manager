@@ -116,3 +116,6 @@ class GoogleAdManagerClient:
             return self.report_downloader.WaitForReport(report_job)
         except errors.AdManagerReportError as e:
             raise GoogleAdManagerClientException(f'Failed to generate report. Error: {e}') from e
+        except KeyError as e:
+            raise GoogleAdManagerClientException(f"Failed to generate report. Please check used dimensions"
+                                                 f" and metrics, Error: {e}")

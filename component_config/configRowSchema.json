@@ -11,6 +11,18 @@
       "description": "Name of output table of the report eg. historical_report",
       "propertyOrder": 10
     },
+    "api_version": {
+      "title": "API version",
+      "type": "string",
+      "enum": [
+            "v202202",
+            "v202205",
+            "v202208"
+          ],
+      "default": "v202202",
+      "description": "Google Ad Manager API version. More info in <a href='https://developers.google.com/ad-manager/api/rel_notes'>Google docs</a>",
+      "propertyOrder": 15
+    },
     "report_settings": {
       "type": "object",
       "title": "Report settings",
@@ -80,7 +92,7 @@
           "title": "Include zero impressions",
           "type": "boolean",
           "format" : "checkbox",
-          "description": "If your report supports this, you can download data of ads with zer impressions",
+          "description": "If your report supports this, you can download data of ads with zero impressions",
           "default": false,
           "propertyOrder": 90
         }
@@ -91,13 +103,17 @@
       "title": "Date range",
       "propertyOrder": 90,
       "required": [
-        "timezone",
         "date_range"
       ],
       "properties": {
         "timezone": {
           "title": "Timezone",
           "type": "string",
+          "options": {
+            "dependencies": {
+              "api_version": "v202202"
+            }
+          },
           "enum": [
             "PUBLISHER",
             "AD_EXCHANGE",
