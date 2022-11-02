@@ -21,8 +21,9 @@ class GoogleAdManagerClient:
 
         private_key_file = self.get_private_key_file(private_key, client_email, token_uri)
 
+        self.api_version = api_version
         self.client = self.get_client(network_code, private_key_file)
-        self.report_downloader = self.client.GetDataDownloader(version=api_version)
+        self.report_downloader = self.client.GetDataDownloader(version=self.api_version)
 
     @staticmethod
     def get_client(network_code: str, private_key_file: str) -> ad_manager.AdManagerClient:
@@ -52,15 +53,22 @@ class GoogleAdManagerClient:
             }, outfile)
         return file_path
 
-    @staticmethod
-    def get_report_query(dimensions: List, metrics: List, timezone: str, dimension_attributes: List = None,
+    def get_report_query(self, dimensions: List, metrics: List, timezone: str, dimension_attributes: List = None,
                          ad_unit_view: str = "", currency: str = "", date_from: date = "", date_to: date = "",
                          dynamic_date: str = "", include_zero_impressions: bool = False) -> dict:
-        report_query = {
-            'dimensions': dimensions,
-            'columns': metrics,
-            'timeZoneType': timezone
-        }
+
+        if self.api_version in ["v202205", "v202208"]:
+            report_query = {
+                'dimensions': dimensions,
+                'columns': metrics
+            }
+        else:
+            report_query = {
+                'dimensions': dimensions,
+                'columns': metrics,
+                'timeZoneType': timezone
+            }
+
         if dynamic_date:
             report_query["dateRangeType"] = dynamic_date
         elif date_from and date_to:
