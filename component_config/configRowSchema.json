@@ -28,7 +28,6 @@
       "type": "object",
       "title": "Report settings",
       "required": [
-        "report_type",
         "metrics",
         "dimensions",
         "ad_unit_view"
