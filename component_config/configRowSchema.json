@@ -35,19 +35,6 @@
       ],
       "propertyOrder": 20,
       "properties": {
-        "report_type": {
-          "title": "Report type",
-          "type": "string",
-          "enum": [
-            "Historical",
-            "Future sell - through",
-            "Reach",
-            "Ad Exchange",
-            "Ad speed"
-          ],
-          "default": "Object",
-          "propertyOrder": 30
-        },
         "dimensions": {
           "title": "Dimensions",
           "type": "string",
