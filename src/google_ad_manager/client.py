@@ -1,4 +1,6 @@
 import logging
+
+import googleads.errors
 import yaml
 import json
 import tempfile
@@ -57,22 +59,15 @@ class GoogleAdManagerClient:
                          ad_unit_view: str = "", currency: str = "", date_from: date = "", date_to: date = "",
                          dynamic_date: str = "", include_zero_impressions: bool = False) -> dict:
 
-        if self.api_version in ["v202205", "v202208"]:
-            report_query = {
-                'dimensions': dimensions,
-                'columns': metrics
-            }
-        elif self.api_version == "v202202":
-            report_query = {
-                'dimensions': dimensions,
-                'columns': metrics,
-                'timeZoneType': timezone
-            }
+        report_query = {
+            'dimensions': dimensions,
+            'columns': metrics
+        }
 
+        if self.api_version == "v202202":
+            report_query['timeZoneType'] = timezone
             if currency:
                 report_query['adxReportCurrency'] = currency
-        else:
-            raise NotImplementedError(f"API version {self.api_version} is not supported.")
 
         if dynamic_date:
             report_query["dateRangeType"] = dynamic_date
@@ -119,5 +114,8 @@ class GoogleAdManagerClient:
         except errors.AdManagerReportError as e:
             raise GoogleAdManagerClientException(f'Failed to generate report. Error: {e}') from e
         except KeyError as e:
-            raise GoogleAdManagerClientException(f"Failed to generate report. Please check used dimensions"
-                                                 f" and metrics, Error: {e}")
+            raise GoogleAdManagerClientException(f"Failed to generate report. Please check used dimensions, "
+                                                 f"metrics and used api version, Error: {e}") from e
+        except googleads.errors.GoogleAdsServerFault as e:
+            raise GoogleAdManagerClientException(f"Failed to generate report. Please check used dimensions, "
+                                                 f"metrics and used api version, Error: {e}") from e

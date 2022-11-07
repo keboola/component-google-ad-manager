@@ -35,6 +35,8 @@ REQUIRED_PARAMETERS = [KEY_CLIENT_EMAIL, KEY_PRIVATE_KEY, KEY_TOKEN_URI, KEY_NET
                        KEY_REPORT_NAME, KEY_DATE_RANGE_SETTINGS, KEY_API_VERSION]
 REQUIRED_IMAGE_PARS = []
 
+SUPPORTED_VERSIONS = ["v202202", "v202205", "v202208", "v2022011"]
+
 
 class Component(ComponentBase):
     def __init__(self):
@@ -62,10 +64,11 @@ class Component(ComponentBase):
         date_to = date_settings.get(KEY_DATE_TO)
         date_range = date_settings.get(KEY_DATE_RANGE)
 
-        # This is here for the old config version that does not have this param does get processed
-        if params.get(KEY_API_VERSION):
-            api_version = params.get(KEY_API_VERSION)
+        if (api_version := params.get(KEY_API_VERSION)) is not None:
+            if api_version not in SUPPORTED_VERSIONS:
+                raise UserException(f"Unsupported API version: {api_version}")
         else:
+            # This is here for the old config version that does not have this param does get processed
             api_version = "v202202"
 
         date_from, date_to, dynamic_date = self._get_date_range(date_from, date_to, date_range)
