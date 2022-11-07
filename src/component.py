@@ -23,11 +23,11 @@ KEY_METRICS = "metrics"
 KEY_DIMENSIONS = "dimensions"
 KEY_DIMENSION_ATTRIBUTES = "dimension_attributes"
 KEY_DATE_RANGE_SETTINGS = "date_settings"
-KEY_TIMEZONE = "timezone"
+KEY_TIMEZONE = "timezone"  # deprecated after v202202
 KEY_DATE_FROM = "date_from"
 KEY_DATE_TO = "date_to"
 KEY_DATE_RANGE = "date_range"
-KEY_REPORT_CURRENCY = "report_currency"
+KEY_REPORT_CURRENCY = "report_currency"  # deprecated after v202202
 KEY_AD_UNIT_VIEW = "ad_unit_view"
 
 REQUIRED_PARAMETERS = [KEY_CLIENT_EMAIL, KEY_PRIVATE_KEY, KEY_TOKEN_URI, KEY_NETWORK_CODE, KEY_REPORT_SETTINGS,
