@@ -61,7 +61,12 @@ class Component(ComponentBase):
         date_from = date_settings.get(KEY_DATE_FROM)
         date_to = date_settings.get(KEY_DATE_TO)
         date_range = date_settings.get(KEY_DATE_RANGE)
-        api_version = params.get(KEY_API_VERSION)
+
+        # This is here for the old config version that does not have this param does get processed
+        if params.get(KEY_API_VERSION):
+            api_version = params.get(KEY_API_VERSION)
+        else:
+            api_version = "v202202"
 
         date_from, date_to, dynamic_date = self._get_date_range(date_from, date_to, date_range)
 

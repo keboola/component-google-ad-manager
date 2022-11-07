@@ -62,12 +62,17 @@ class GoogleAdManagerClient:
                 'dimensions': dimensions,
                 'columns': metrics
             }
-        else:
+        elif self.api_version == "v202202":
             report_query = {
                 'dimensions': dimensions,
                 'columns': metrics,
                 'timeZoneType': timezone
             }
+
+            if currency:
+                report_query['adxReportCurrency'] = currency
+        else:
+            raise NotImplementedError(f"API version {self.api_version} is not supported.")
 
         if dynamic_date:
             report_query["dateRangeType"] = dynamic_date
@@ -81,9 +86,6 @@ class GoogleAdManagerClient:
 
         if ad_unit_view:
             report_query['adUnitView'] = ad_unit_view
-
-        if currency:
-            report_query['adxReportCurrency'] = currency
 
         if include_zero_impressions:
             report_query['include_zero_impressions'] = True
