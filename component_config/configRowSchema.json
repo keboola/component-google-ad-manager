@@ -11,30 +11,29 @@
       "description": "Name of output table of the report eg. historical_report",
       "propertyOrder": 10
     },
+    "api_version": {
+      "title": "API version",
+      "type": "string",
+      "enum": [
+            "v202202",
+            "v202205",
+            "v202208",
+            "v202211"
+          ],
+      "default": "v202202",
+      "description": "Google Ad Manager API version. More info in <a href='https://developers.google.com/ad-manager/api/rel_notes'>Google docs</a>",
+      "propertyOrder": 15
+    },
     "report_settings": {
       "type": "object",
       "title": "Report settings",
       "required": [
-        "report_type",
         "metrics",
         "dimensions",
         "ad_unit_view"
       ],
       "propertyOrder": 20,
       "properties": {
-        "report_type": {
-          "title": "Report type",
-          "type": "string",
-          "enum": [
-            "Historical",
-            "Future sell - through",
-            "Reach",
-            "Ad Exchange",
-            "Ad speed"
-          ],
-          "default": "Object",
-          "propertyOrder": 30
-        },
         "dimensions": {
           "title": "Dimensions",
           "type": "string",
@@ -53,17 +52,6 @@
           "description": "List of metrics to use for the report, find supported metrics for specific report types in the documentation",
           "propertyOrder": 60
         },
-        "report_currency": {
-          "title": "Report currency",
-          "type": "string",
-          "options": {
-            "dependencies": {
-              "report_type": "Ad Exchange"
-            }
-          },
-          "description": "Report currency",
-          "propertyOrder": 70
-        },
         "ad_unit_view": {
           "title": "Ad unit view",
           "type": "string",
@@ -80,7 +68,7 @@
           "title": "Include zero impressions",
           "type": "boolean",
           "format" : "checkbox",
-          "description": "If your report supports this, you can download data of ads with zer impressions",
+          "description": "If your report supports this, you can download data of ads with zero impressions",
           "default": false,
           "propertyOrder": 90
         }
@@ -89,23 +77,11 @@
     "date_settings": {
       "type": "object",
       "title": "Date range",
-      "propertyOrder": 90,
+      "propertyOrder": 100,
       "required": [
-        "timezone",
         "date_range"
       ],
       "properties": {
-        "timezone": {
-          "title": "Timezone",
-          "type": "string",
-          "enum": [
-            "PUBLISHER",
-            "AD_EXCHANGE",
-            "UNKNOWN"
-          ],
-          "default": "Object",
-          "propertyOrder": 100
-        },
         "date_range": {
           "title": "Dynamic date range",
           "type": "string",

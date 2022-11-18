@@ -12,29 +12,29 @@ from keboola.component.base import ComponentBase, UserException
 from googleads import errors as google_errors
 from google.auth import exceptions
 
-API_VERSION = "v202202"
-
+KEY_API_VERSION = "api_version"
 KEY_CLIENT_EMAIL = "client_email"
 KEY_PRIVATE_KEY = "#private_key"
 KEY_TOKEN_URI = "token_uri"
 KEY_NETWORK_CODE = "network_code"
 KEY_REPORT_SETTINGS = "report_settings"
-KEY_REPORT_TYPE = "report_type"
 KEY_REPORT_NAME = "report_name"
 KEY_METRICS = "metrics"
 KEY_DIMENSIONS = "dimensions"
 KEY_DIMENSION_ATTRIBUTES = "dimension_attributes"
 KEY_DATE_RANGE_SETTINGS = "date_settings"
-KEY_TIMEZONE = "timezone"
+KEY_TIMEZONE = "timezone"  # deprecated after v202202
 KEY_DATE_FROM = "date_from"
 KEY_DATE_TO = "date_to"
 KEY_DATE_RANGE = "date_range"
-KEY_REPORT_CURRENCY = "report_currency"
+KEY_REPORT_CURRENCY = "report_currency"  # deprecated after v202202
 KEY_AD_UNIT_VIEW = "ad_unit_view"
 
 REQUIRED_PARAMETERS = [KEY_CLIENT_EMAIL, KEY_PRIVATE_KEY, KEY_TOKEN_URI, KEY_NETWORK_CODE, KEY_REPORT_SETTINGS,
                        KEY_REPORT_NAME, KEY_DATE_RANGE_SETTINGS]
 REQUIRED_IMAGE_PARS = []
+
+SUPPORTED_VERSIONS = ["v202202", "v202205", "v202208", "v202211"]
 
 
 class Component(ComponentBase):
@@ -63,10 +63,17 @@ class Component(ComponentBase):
         date_to = date_settings.get(KEY_DATE_TO)
         date_range = date_settings.get(KEY_DATE_RANGE)
 
+        if (api_version := params.get(KEY_API_VERSION)) is not None:
+            if api_version not in SUPPORTED_VERSIONS:
+                raise UserException(f"Unsupported API version: {api_version}")
+        else:
+            # This is here for the old config version that does not have this param does get processed
+            api_version = "v202202"
+
         date_from, date_to, dynamic_date = self._get_date_range(date_from, date_to, date_range)
 
         try:
-            client = GoogleAdManagerClient(client_email, private_key, token_uri, network_code, API_VERSION)
+            client = GoogleAdManagerClient(client_email, private_key, token_uri, network_code, api_version)
         except ValueError as client_error:
             raise UserException(client_error) from client_error
         except exceptions.RefreshError as login_error:
@@ -78,7 +85,6 @@ class Component(ComponentBase):
                                                dimension_attributes=dimension_attributes, date_from=date_from,
                                                date_to=date_to, dynamic_date=dynamic_date, currency=report_currency,
                                                ad_unit_view=ad_unit_view)
-
         try:
             result_file = client.fetch_report_result(report_query)
         except google_errors.GoogleAdsServerFault as google_error:
