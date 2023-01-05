@@ -95,6 +95,7 @@ class Component(ComponentBase):
         filesize = os.path.getsize(result_file.name)
         if filesize == 0:
             raise UserException("No data found")
+        logging.info(f"Total Filesize is {filesize}")
 
         table = self.create_out_table_definition(report_name, incremental=False)
         columns = self._write_results_get_columns(result_file.name, table.full_path)
@@ -117,8 +118,10 @@ class Component(ComponentBase):
                 for i, line in enumerate(original_file):
                     if i == 0:
                         columns = line.decode().strip().split(",")
+                        logging.info(f"Columns : {line.decode()}")
                         # Do not write header to CSV file
                         continue
+                    logging.info(line.decode())
                     new_file.write(line.decode())
         return columns
 
