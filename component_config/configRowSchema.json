@@ -15,6 +15,7 @@
       "title": "API version",
       "type": "string",
       "enum": [
+        "v202302",
             "v202202",
             "v202205",
             "v202208",
