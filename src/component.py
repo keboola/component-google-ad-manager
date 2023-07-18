@@ -62,9 +62,6 @@ class Component(ComponentBase):
         if (api_version := params.get(KEY_API_VERSION)) is not None:
             if api_version not in SUPPORTED_VERSIONS:
                 raise UserException(f"Unsupported API version: {api_version}")
-        else:
-            # This is here for the old config version that does not have this param does get processed
-            api_version = "v202202"
 
         date_from, date_to, dynamic_date = self._get_date_range(date_from, date_to, date_range)
 
