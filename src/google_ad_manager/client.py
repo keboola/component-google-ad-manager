@@ -55,19 +55,14 @@ class GoogleAdManagerClient:
             }, outfile)
         return file_path
 
-    def get_report_query(self, dimensions: List, metrics: List, timezone: str, dimension_attributes: List = None,
-                         ad_unit_view: str = "", currency: str = "", date_from: date = "", date_to: date = "",
+    def get_report_query(self, dimensions: List, metrics: List, dimension_attributes: List = None,
+                         ad_unit_view: str = "", date_from: date = "", date_to: date = "",
                          dynamic_date: str = "", include_zero_impressions: bool = False) -> dict:
 
         report_query = {
             'dimensions': dimensions,
             'columns': metrics
         }
-
-        if self.api_version == "v202202":
-            report_query['timeZoneType'] = timezone
-            if currency:
-                report_query['adxReportCurrency'] = currency
 
         if dynamic_date:
             report_query["dateRangeType"] = dynamic_date
