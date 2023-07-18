@@ -27,7 +27,7 @@ to find the proper names of the dimensions and metrics for the API.
 Eg. CTR in the Ad exchange report type is AD_EXCHANGE_CTR in the API. 
 
 - Output name (report_name) - [REQ] name of output eg. historical_report_ads_weekly will be saved as this in storage
-- API version (api_version) - [REQ]
+- API version (api_version) - [REQ] API version for the component to use, see [deprecation schedule](https://developers.google.com/ad-manager/api/deprecation)
 - Report settings (report_settings) [REQ]
   - Dimensios (dimensions) - [REQ] should be written comma separated (no quotation marks) eg. DIMENSION1, DIMENSION2 ... etc.
   - Dimension attributes (dimension_attributes) - [OPT] should be written comma separated (no quotation marks) eg. DIMENSION_ATTR1, DIMENSION_ATTR2 ... etc.
