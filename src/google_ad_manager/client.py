@@ -114,3 +114,6 @@ class GoogleAdManagerClient:
         except googleads.errors.GoogleAdsServerFault as e:
             raise GoogleAdManagerClientException(f"Failed to generate report. Please check used dimensions, "
                                                  f"metrics and used api version, Error: {e}") from e
+        except googleads.errors.GoogleAdsValueError() as e:
+            raise GoogleAdManagerClientException(f"Failed to generate report. Selected API version is probably "
+                                                 f"deprecated. Error: {e} from e")
