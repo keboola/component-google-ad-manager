@@ -27,6 +27,7 @@ to find the proper names of the dimensions and metrics for the API.
 Eg. CTR in the Ad exchange report type is AD_EXCHANGE_CTR in the API. 
 
 - Output name (report_name) - [REQ] name of output eg. historical_report_ads_weekly will be saved as this in storage
+- API version (api_version) - [REQ]
 - Report settings (report_settings) [REQ]
   - Dimensios (dimensions) - [REQ] should be written comma separated (no quotation marks) eg. DIMENSION1, DIMENSION2 ... etc.
   - Dimension attributes (dimension_attributes) - [OPT] should be written comma separated (no quotation marks) eg. DIMENSION_ATTR1, DIMENSION_ATTR2 ... etc.
@@ -37,7 +38,6 @@ Eg. CTR in the Ad exchange report type is AD_EXCHANGE_CTR in the API.
     - FLAT : All the ad units. Metrics do not include events for the descendants.
     - HIERARCHICAL : Use the ad unit hierarchy. There will be as many ad unit columns as levels of ad units in the generated report
 - Date settings (date_settings) [REQ]
-  - Timezone (timezone) - [REQ] Determines the time zone used for the report's date range. It allows AD_EXCHANGE, PUBLISHER and PROPOSAL_LOCAL
   - Date range (date_range) - [REQ] Type of date range
   - Last week (sun-sat) used for WEEK dimension
   - Last month (from first day of the previous month to last day of the previous month)
