@@ -15,13 +15,12 @@
       "title": "API version",
       "type": "string",
       "enum": [
-        "v202302",
-            "v202202",
-            "v202205",
-            "v202208",
+            "v202308",
+            "v202305",
+            "v202302",
             "v202211"
           ],
-      "default": "v202202",
+      "default": "v202305",
       "description": "Google Ad Manager API version. More info in <a href='https://developers.google.com/ad-manager/api/rel_notes'>Google docs</a>",
       "propertyOrder": 15
     },
@@ -65,13 +64,18 @@
           "default": "Object",
           "propertyOrder": 80
         },
+        "report_currency": {
+          "title": "Report Currency",
+          "type": "string",
+          "description": "The currency for revenue metrics. Defaults to the network currency if left null. The supported currency codes can be found in <a href='https://support.google.com/admanager/answer/6019533'>this Help Center article.</a>"
+        },
         "include_zero_impressions": {
           "title": "Include zero impressions",
           "type": "boolean",
           "format" : "checkbox",
           "description": "If your report supports this, you can download data of ads with zero impressions",
           "default": false,
-          "propertyOrder": 90
+          "propertyOrder": 100
         }
       }
     },

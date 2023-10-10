@@ -55,7 +55,7 @@ class GoogleAdManagerClient:
             }, outfile)
         return file_path
 
-    def get_report_query(self, dimensions: List, metrics: List, timezone: str, dimension_attributes: List = None,
+    def get_report_query(self, dimensions: List, metrics: List, dimension_attributes: List = None,
                          ad_unit_view: str = "", currency: str = "", date_from: date = "", date_to: date = "",
                          dynamic_date: str = "", include_zero_impressions: bool = False) -> dict:
 
@@ -64,10 +64,8 @@ class GoogleAdManagerClient:
             'columns': metrics
         }
 
-        if self.api_version == "v202202":
-            report_query['timeZoneType'] = timezone
-            if currency:
-                report_query['adxReportCurrency'] = currency
+        if currency:
+            report_query['reportCurrency'] = currency
 
         if dynamic_date:
             report_query["dateRangeType"] = dynamic_date
@@ -119,3 +117,6 @@ class GoogleAdManagerClient:
         except googleads.errors.GoogleAdsServerFault as e:
             raise GoogleAdManagerClientException(f"Failed to generate report. Please check used dimensions, "
                                                  f"metrics and used api version, Error: {e}") from e
+        except googleads.errors.GoogleAdsValueError() as e:
+            raise GoogleAdManagerClientException(f"Failed to generate report. Selected API version is probably "
+                                                 f"deprecated. Error: {e} from e")
