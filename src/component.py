@@ -26,6 +26,7 @@ KEY_DATE_RANGE_SETTINGS = "date_settings"
 KEY_DATE_FROM = "date_from"
 KEY_DATE_TO = "date_to"
 KEY_DATE_RANGE = "date_range"
+KEY_REPORT_CURRENCY = "report_currency"
 KEY_AD_UNIT_VIEW = "ad_unit_view"
 
 REQUIRED_PARAMETERS = [KEY_CLIENT_EMAIL, KEY_PRIVATE_KEY, KEY_TOKEN_URI, KEY_NETWORK_CODE, KEY_REPORT_SETTINGS,
@@ -53,6 +54,7 @@ class Component(ComponentBase):
         metrics = self._parse_input_string_to_list(report_settings.get(KEY_METRICS))
         dimensions = self._parse_input_string_to_list(report_settings.get(KEY_DIMENSIONS))
         dimension_attributes = self._parse_input_string_to_list(report_settings.get(KEY_DIMENSION_ATTRIBUTES))
+        report_currency = report_settings.get(KEY_REPORT_CURRENCY, None)
         ad_unit_view = report_settings.get(KEY_AD_UNIT_VIEW)
         date_settings = params.get(KEY_DATE_RANGE_SETTINGS, {})
         date_from = date_settings.get(KEY_DATE_FROM)
@@ -76,7 +78,7 @@ class Component(ComponentBase):
 
         report_query = client.get_report_query(dimensions, metrics,
                                                dimension_attributes=dimension_attributes, date_from=date_from,
-                                               date_to=date_to, dynamic_date=dynamic_date,
+                                               date_to=date_to, dynamic_date=dynamic_date, currency=report_currency,
                                                ad_unit_view=ad_unit_view)
         try:
             result_file = client.fetch_report_result(report_query)

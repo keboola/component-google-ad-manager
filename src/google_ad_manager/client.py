@@ -56,13 +56,16 @@ class GoogleAdManagerClient:
         return file_path
 
     def get_report_query(self, dimensions: List, metrics: List, dimension_attributes: List = None,
-                         ad_unit_view: str = "", date_from: date = "", date_to: date = "",
+                         ad_unit_view: str = "", currency: str = "", date_from: date = "", date_to: date = "",
                          dynamic_date: str = "", include_zero_impressions: bool = False) -> dict:
 
         report_query = {
             'dimensions': dimensions,
             'columns': metrics
         }
+
+        if currency:
+            report_query['reportCurrency'] = currency
 
         if dynamic_date:
             report_query["dateRangeType"] = dynamic_date

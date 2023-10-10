@@ -64,13 +64,18 @@
           "default": "Object",
           "propertyOrder": 80
         },
+        "report_currency": {
+          "title": "Report Currency",
+          "type": "string",
+          "description": "The currency for revenue metrics. Defaults to the network currency if left null. The supported currency codes can be found in .<a href='https://support.google.com/admanager/answer/6019533'>this Help Center article</a>"
+        },
         "include_zero_impressions": {
           "title": "Include zero impressions",
           "type": "boolean",
           "format" : "checkbox",
           "description": "If your report supports this, you can download data of ads with zero impressions",
           "default": false,
-          "propertyOrder": 90
+          "propertyOrder": 100
         }
       }
     },
