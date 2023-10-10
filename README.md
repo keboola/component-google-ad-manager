@@ -37,6 +37,7 @@ Eg. CTR in the Ad exchange report type is AD_EXCHANGE_CTR in the API.
     - TOP_LEVEL : Only the top level ad units. Metrics include events for their descendants that are not filtered out.
     - FLAT : All the ad units. Metrics do not include events for the descendants.
     - HIERARCHICAL : Use the ad unit hierarchy. There will be as many ad unit columns as levels of ad units in the generated report
+  - Report Currency (report_currency) [OPT] - The currency for revenue metrics. Defaults to the network currency if left null. The supported currency codes can be found in [this Help Center article](https://support.google.com/admanager/answer/6019533).
 - Date settings (date_settings) [REQ]
   - Date range (date_range) - [REQ] Type of date range
   - Last week (sun-sat) used for WEEK dimension
