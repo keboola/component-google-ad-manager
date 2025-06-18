@@ -15,12 +15,10 @@
       "title": "API version",
       "type": "string",
       "enum": [
-            "v202408",
-            "v202405",
-            "v202402",
-            "v202311"
+            "v202505",
+            "v202408"
           ],
-      "default": "v202408",
+      "default": "v202505",
       "description": "Google Ad Manager API version. More info in <a href='https://developers.google.com/ad-manager/api/rel_notes'>Google docs</a>",
       "propertyOrder": 15
     },
