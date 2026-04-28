@@ -3,6 +3,7 @@ keboola.utils
 keboola.http-client
 mock
 freezegun
+pytest
 googleads>=49.0.0
 retry==0.9.2
 dateparser
