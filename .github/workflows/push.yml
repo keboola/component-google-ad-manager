@@ -14,4 +14,5 @@ jobs:
     with:
       app_id: kds-team.ex-google-ad-manager
       vendor: kds-team
+      kbc_developerportal_username: kds-team+github
     secrets: inherit
