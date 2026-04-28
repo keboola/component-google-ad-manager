@@ -1,6 +1,6 @@
 # Google Ad Manager Report extractor
 
-This extractor allows you to download specified reports from your Google Ad Manager account. The component uses the 202105 version of the API.
+This extractor allows you to download specified reports from your Google Ad Manager account. Supported SOAP API versions are listed in the configuration; new configurations default to the most recent supported version.
 
 **Table of contents:**  
   
