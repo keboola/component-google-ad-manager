@@ -1,5 +1,5 @@
-FROM python:3.8.6-slim
-ENV PYTHONIOENCODING utf-8
+FROM python:3.13-slim
+ENV PYTHONIOENCODING=utf-8
 
 COPY /src /code/src/
 COPY /tests /code/tests/
