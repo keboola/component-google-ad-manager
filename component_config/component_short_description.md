@@ -1,1 +1,1 @@
-Google Ad Manager is an ad management platform for large publishers who have significant direct sales.
+Extracts custom reports from Google Ad Manager.
